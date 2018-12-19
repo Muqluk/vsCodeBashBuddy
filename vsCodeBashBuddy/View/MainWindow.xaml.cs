@@ -5,5 +5,9 @@ namespace vsCodeBashBuddy {
         public MainWindow() {
             InitializeComponent();
         }
+
+    private void ExecuteOnClosing(object sender, System.ComponentModel.CancelEventArgs e) {
+
     }
+  }
 }
