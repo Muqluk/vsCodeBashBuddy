@@ -33,19 +33,25 @@
       ItemsSource="{Binding WatchedAppList}"/>
     <WrapPanel Grid.Row="1">
       <Button 
-      FontSize="20"
-      Grid.Row="1"
-      IsEnabled="{Binding ReloadAppsEnabled}" 
-      Command="{Binding ReloadWatchedAppsCmd}"
-      Width="auto"
-      HorizontalAlignment="Left"
-      VerticalAlignment="Top">Reload</Button>
+        FontSize="20"
+        Grid.Row="1"
+        IsEnabled="{Binding ReloadAppsEnabled}" 
+        Command="{Binding ReloadWatchedAppsCmd}"
+        Width="auto"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top">Reload</Button>
       <CheckBox 
         IsChecked="{Binding AutoRefreshApps}"
         VerticalAlignment="Center"
         Margin="10 0 0 0"
       />
       <Label>Auto Update</Label>
+      <CheckBox 
+        IsChecked="{Binding IncludeBrowser}"
+        VerticalAlignment="Center"
+        Margin="10 0 0 0"
+      />
+      <Label>Include Browser</Label>
     </WrapPanel>
     <Button 
       FontSize="20"

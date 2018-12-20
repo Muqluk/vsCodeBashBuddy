@@ -10,13 +10,15 @@ using GalaSoft.MvvmLight.Command;
 namespace vsCodeBashBuddy.ViewModel {
   public class MainViewModel : ViewModelBase {
     #region statics
-    string [] watchedApps = { "bash", "cmd", "conhost", "git - bash", "iexplore", "mintty", "mongod", "node", "chrome" };
+    string [] watchedApps = { "bash", "cmd", "conhost", "git - bash", "mintty", "mongod", "node" };
+    string [] browsers = { "iexplore", "chrome" };
     #endregion
 
     #region members
 
     private Thread appsWatcher;
     private bool _autoRefreshApps = false;
+    private bool _includeBrowser = false;
     private bool _requestStopRefreshApps = false;
     private bool _reloadAppsEnabled = true;
     private bool _killButtonEnabled = true;
@@ -53,6 +55,17 @@ namespace vsCodeBashBuddy.ViewModel {
             //requestRefreshAppsStop();
           }
           RaisePropertyChanged("AutoRefreshApps");
+        }
+      }
+    }
+    public bool IncludeBrowser {
+      get {
+        return _includeBrowser;
+      }
+      set {
+        if (value != _includeBrowser) {
+          _includeBrowser = value;
+          RaisePropertyChanged("IncludeBrowser");
         }
       }
     }
@@ -139,6 +152,11 @@ namespace vsCodeBashBuddy.ViewModel {
         foreach (var proc in processes) {
           if (watchedApps.Contains(proc.ProcessName)) {
             apps = apps.Concat<string>(new [] { proc.ProcessName });
+          }
+          if (IncludeBrowser) {
+            if (browsers.Contains(proc.ProcessName)) {
+              apps = apps.Concat<string>(new [] { proc.ProcessName });
+            }
           }
         }
       } catch (Exception e) {
