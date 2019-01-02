@@ -10,19 +10,38 @@
         SizeToContent="WidthAndHeight"
         MaxHeight="800"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
+  <Window.Resources>
+    <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    <InverseVisibilityConverter x:Key="InverseVis"/>
+  </Window.Resources>
   <i:Interaction.Triggers>
     <i:EventTrigger EventName="Closing">
       <i:InvokeCommandAction Command="{Binding HandleWindowClosingCmd}" CommandParameter="{Binding}"/>
     </i:EventTrigger>
   </i:Interaction.Triggers>
-  <Grid>
+  <Grid Name="DisplayGrid">
     <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
       <RowDefinition Height="*"/>
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
+    <Button Grid.Row="0" Opacity=".25">Show Errors</Button>
     <ListBox 
-      Grid.Row="0"
+      Visibility="{Binding DisplayingErrors, Converter={StaticResource BoolToVis}}"
+      Grid.Row="1"
+      Grid.RowSpan="3"
+      Background="White"
+      Height="auto"
+      MinHeight="200"
+      MinWidth="400"
+      Width="auto"
+      VerticalAlignment="Stretch"
+      HorizontalAlignment="Stretch"
+      ScrollViewer.CanContentScroll="true"
+      ItemsSource="{Binding Errors}"/>
+    <ListBox 
+      Grid.Row="2"
       Height="auto"
       MinHeight="200"
       MinWidth="400"
@@ -31,7 +50,7 @@
       HorizontalAlignment="Stretch"
       ScrollViewer.CanContentScroll="true"
       ItemsSource="{Binding WatchedAppList}"/>
-    <WrapPanel Grid.Row="1">
+    <WrapPanel Grid.Row="3" Margin="3 3 5 3">
       <Button 
         FontSize="20"
         Grid.Row="1"
@@ -40,26 +59,25 @@
         Width="auto"
         HorizontalAlignment="Left"
         VerticalAlignment="Top">Reload</Button>
-      <CheckBox 
-        IsChecked="{Binding AutoRefreshApps}"
-        VerticalAlignment="Center"
-        Margin="10 0 0 0"
-      />
-      <Label>Auto Update</Label>
-      <CheckBox 
-        IsChecked="{Binding IncludeBrowser}"
-        VerticalAlignment="Center"
-        Margin="10 0 0 0"
-      />
-      <Label>Include Browser</Label>
+      <StackPanel>
+        <WrapPanel>
+          <CheckBox IsChecked="{Binding AutoRefreshApps}" VerticalAlignment="Center" Margin="5 0 0 0" />
+          <Label Margin="0 -5 0 -5">Auto Update</Label>
+        </WrapPanel>
+        <WrapPanel>
+          <CheckBox IsChecked="{Binding IncludeBrowser}" VerticalAlignment="Center" Margin="5 0 0 0" />
+          <Label Margin="0 -5 0 -5">Include Browser</Label>
+        </WrapPanel>
+      </StackPanel>
     </WrapPanel>
     <Button 
+      Grid.Row="3"
+      Margin="3"
       FontSize="20"
-      Grid.Row="1"
       IsEnabled="{Binding KillButtonEnabled}" 
       Command="{Binding KillSelectedAppsCmd}"
       Width="auto"
       HorizontalAlignment="Right"
-      VerticalAlignment="Bottom">Kill All</Button>
+      VerticalAlignment="Top">Kill All</Button>
   </Grid>
 </Window>

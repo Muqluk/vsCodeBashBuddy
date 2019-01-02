@@ -22,7 +22,9 @@ namespace vsCodeBashBuddy.ViewModel {
     private bool _requestStopRefreshApps = false;
     private bool _reloadAppsEnabled = true;
     private bool _killButtonEnabled = true;
+    private bool _displayingErrors = true;
     private IEnumerable<string> _watchedAppList;
+    private IEnumerable<string> _errorsList;
 
     #endregion
 
@@ -91,6 +93,15 @@ namespace vsCodeBashBuddy.ViewModel {
         }
       }
     }
+    public bool DisplayingErrors {
+      get { return _displayingErrors; }
+      set {
+        if (value != _displayingErrors) {
+          _displayingErrors = value;
+          RaisePropertyChanged("DisplayingErrors");
+        }
+      }
+    }
     public IEnumerable<string> WatchedAppList {
       get {
         return _watchedAppList;
@@ -99,6 +110,15 @@ namespace vsCodeBashBuddy.ViewModel {
         if (value != _watchedAppList) {
           _watchedAppList = value;
           RaisePropertyChanged("WatchedAppList");
+        }
+      }
+    }
+    public IEnumerable<string> ErrorsList {
+      get { return _errorsList; }
+      set {
+        if (value != _errorsList) {
+          _errorsList = value;
+          RaisePropertyChanged("ErrorsList");
         }
       }
     }
