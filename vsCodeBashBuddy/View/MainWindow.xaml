@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:vsCodeBashBuddy"
+        xmlns:c="clr-namespace:vsCodeBashBuddy.ValueConverters"
         mc:Ignorable="d"
         Title="vsCode Bash Buddy"
         SizeToContent="WidthAndHeight"
@@ -12,7 +13,7 @@
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
   <Window.Resources>
     <BooleanToVisibilityConverter x:Key="BoolToVis" />
-    <InverseVisibilityConverter x:Key="InverseVis"/>
+    <c:InverseVisibilityConverter x:Key="InverseVis"/>
   </Window.Resources>
   <i:Interaction.Triggers>
     <i:EventTrigger EventName="Closing">
@@ -26,14 +27,17 @@
       <RowDefinition Height="*"/>
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
-    <Button Grid.Row="0" Opacity=".25">Show Errors</Button>
+    <Button 
+      Grid.Row="0"
+      Command="{Binding ToggleErrorPanel}"
+      Content="Show Errors"/>
     <ListBox 
       Visibility="{Binding DisplayingErrors, Converter={StaticResource BoolToVis}}"
       Grid.Row="1"
       Grid.RowSpan="3"
       Background="White"
       Height="auto"
-      MinHeight="200"
+      MinHeight="238"
       MinWidth="400"
       Width="auto"
       VerticalAlignment="Stretch"
@@ -41,6 +45,7 @@
       ScrollViewer.CanContentScroll="true"
       ItemsSource="{Binding Errors}"/>
     <ListBox 
+      Visibility="{Binding DisplayingErrors, Converter={StaticResource InverseVis}}"
       Grid.Row="2"
       Height="auto"
       MinHeight="200"
@@ -50,7 +55,10 @@
       HorizontalAlignment="Stretch"
       ScrollViewer.CanContentScroll="true"
       ItemsSource="{Binding WatchedAppList}"/>
-    <WrapPanel Grid.Row="3" Margin="3 3 5 3">
+    <WrapPanel 
+      Visibility="{Binding DisplayingErrors, Converter={StaticResource InverseVis}}"
+      Grid.Row="3" 
+      Margin="3 3 5 3">
       <Button 
         FontSize="20"
         Grid.Row="1"
@@ -58,7 +66,8 @@
         Command="{Binding ReloadWatchedAppsCmd}"
         Width="auto"
         HorizontalAlignment="Left"
-        VerticalAlignment="Top">Reload</Button>
+        VerticalAlignment="Top" 
+        Content="Reload" />
       <StackPanel>
         <WrapPanel>
           <CheckBox IsChecked="{Binding AutoRefreshApps}" VerticalAlignment="Center" Margin="5 0 0 0" />
@@ -71,6 +80,7 @@
       </StackPanel>
     </WrapPanel>
     <Button 
+      Visibility="{Binding DisplayingErrors, Converter={StaticResource InverseVis}}"
       Grid.Row="3"
       Margin="3"
       FontSize="20"

@@ -10,8 +10,8 @@ using GalaSoft.MvvmLight.Command;
 namespace vsCodeBashBuddy.ViewModel {
   public class MainViewModel : ViewModelBase {
     #region statics
-    string [] watchedApps = { "bash", "cmd", "conhost", "git - bash", "mintty", "mongod", "node" };
-    string [] browsers = { "iexplore", "chrome" };
+    static string [] watchedApps = { "bash", "cmd", "conhost", "git - bash", "mintty", "mongod", "node" };
+    static string [] browsers = { "iexplore", "chrome", "firefox" };
     #endregion
 
     #region members
@@ -22,9 +22,10 @@ namespace vsCodeBashBuddy.ViewModel {
     private bool _requestStopRefreshApps = false;
     private bool _reloadAppsEnabled = true;
     private bool _killButtonEnabled = true;
-    private bool _displayingErrors = true;
+    private bool _displayingErrors = false;
     private IEnumerable<string> _watchedAppList;
     private IEnumerable<string> _errorsList;
+    private string [] _currentWatchList = watchedApps;
 
     #endregion
 
@@ -67,6 +68,17 @@ namespace vsCodeBashBuddy.ViewModel {
       set {
         if (value != _includeBrowser) {
           _includeBrowser = value;
+          _currentWatchList = watchedApps;
+
+          // my head hurts.  figger out how to merge 2 string arrays later - stupid thing to waste time on now.
+          if (value) {
+            var temp = _currentWatchList.ToList();
+            temp.AddRange(browsers.ToList());
+            _currentWatchList = temp.ToArray();
+          }
+
+          if (!AutoRefreshApps) ReloadWatchedApps();
+
           RaisePropertyChanged("IncludeBrowser");
         }
       }
@@ -123,6 +135,7 @@ namespace vsCodeBashBuddy.ViewModel {
       }
     }
 
+
     #endregion
 
     #region Commands
@@ -135,6 +148,9 @@ namespace vsCodeBashBuddy.ViewModel {
     }
     public RelayCommand HandleWindowClosingCmd {
       get { return new RelayCommand(HandleWindowClosing, () => true); }
+    }
+    public RelayCommand ToggleErrorPanel {
+      get { return new RelayCommand(HandleToggleErrorPanelClick, () => true); }
     }
     #endregion
 
@@ -164,13 +180,14 @@ namespace vsCodeBashBuddy.ViewModel {
     #endregion
 
     #region Command Handlers
+
     private void ReloadWatchedApps() {
       var processes = Process.GetProcesses();
       var apps = Enumerable.Empty<string>();
 
       try {
         foreach (var proc in processes) {
-          if (watchedApps.Contains(proc.ProcessName)) {
+          if (_currentWatchList.Contains(proc.ProcessName)) {
             apps = apps.Concat<string>(new [] { proc.ProcessName });
           }
           if (IncludeBrowser) {
@@ -178,6 +195,7 @@ namespace vsCodeBashBuddy.ViewModel {
               apps = apps.Concat<string>(new [] { proc.ProcessName });
             }
           }
+          System.Diagnostics.Debug.WriteLine(proc);
         }
       } catch (Exception e) {
 
@@ -191,11 +209,11 @@ namespace vsCodeBashBuddy.ViewModel {
       var apps = Enumerable.Empty<string>();
 
       foreach (var proc in processes) {
-        if (watchedApps.Contains(proc.ProcessName)) {
+        if (_currentWatchList.Contains(proc.ProcessName)) {
           try {
             proc.Kill();
-          } catch {
-            // do nothing.
+          } catch (Exception ex) {
+            ErrorsList = ErrorsList.Concat<string>(new [] { ex.Message });
           }
         }
       }
@@ -203,6 +221,10 @@ namespace vsCodeBashBuddy.ViewModel {
       if (!AutoRefreshApps) {
         ReloadWatchedApps();
       }
+    }
+
+    private void HandleToggleErrorPanelClick() {
+      DisplayingErrors = !_displayingErrors;
     }
     #endregion
 
