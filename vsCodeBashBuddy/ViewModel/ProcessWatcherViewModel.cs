@@ -49,6 +49,9 @@ namespace vsCodeBashBuddy.ViewModel {
       }
       set {
         if (value != _autoRefreshApps) {
+          if (value == true) {
+            System.Windows.MessageBox.Show("Reminder, currently threads are not stopped on application unload - so memory leak will exist.  Stop Threads manually.");
+          }
           _autoRefreshApps = value;
           if (_autoRefreshApps == true) {
             _requestStopRefreshApps = false;
@@ -145,7 +148,6 @@ namespace vsCodeBashBuddy.ViewModel {
     #endregion
 
     #region Commands
-    // this one will go away later - should be a thread in the background auto watching.
 
     public RelayCommand ReloadWatchedAppsCmd {
       get { return new RelayCommand(ReloadWatchedApps, () => true); }
@@ -159,11 +161,6 @@ namespace vsCodeBashBuddy.ViewModel {
       get { return new RelayCommand(HandleToggleErrorPanelClick, () => true); }
     }
 
-    // this one will go away later - should be a thread in the background auto watching.
-    public RelayCommand HandleWindowClosingCmd {
-      get { return new RelayCommand(HandleWindowClosing, () => true); }
-    }
-
     #endregion
 
     #region Ctor
@@ -173,6 +170,7 @@ namespace vsCodeBashBuddy.ViewModel {
     #endregion
 
     #region Threading
+
     private void StartAppWatcher() {
       _requestStopRefreshApps = false;
       appsWatcher = new Thread(new ThreadStart(AppWatcher));
@@ -210,7 +208,7 @@ namespace vsCodeBashBuddy.ViewModel {
           System.Diagnostics.Debug.WriteLine(proc);
         }
       } catch (Exception e) {
-
+        System.Windows.MessageBox.Show(e.Message);
       }
 
       WatchedAppList = apps.Distinct().OrderBy(s => s, StringComparer.CurrentCultureIgnoreCase);
@@ -237,22 +235,6 @@ namespace vsCodeBashBuddy.ViewModel {
 
     private void HandleToggleErrorPanelClick() {
       DisplayingErrors = !_displayingErrors;
-    }
-    #endregion
-
-    #region Application Event Handlers
-
-    private void HandleWindowClosing() {
-      int attempts = 0;
-      if (appsWatcher != null) {
-        while (_autoRefreshApps || appsWatcher.IsAlive || attempts >= 50) {
-          this.AutoRefreshApps = false;
-          Thread.Sleep(50);
-        }
-        if (attempts >= 5) { // hard kill it.
-          appsWatcher.Abort();
-        }
-      }
     }
 
     #endregion
