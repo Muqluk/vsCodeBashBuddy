@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:vsCodeBashBuddy.View"
              mc:Ignorable="d"
              Background="Aqua">
-  <Grid VerticalAlignment="Stretch">
+  <Grid MinHeight="350"
+        MinWidth="500">
     <Grid.ColumnDefinitions>
       <ColumnDefinition MinWidth="100"
                         Width="2*" />
@@ -26,8 +27,8 @@
                   VerticalAlignment="Stretch"
                   HorizontalAlignment="Stretch"
                   Grid.Row="1"></GridSplitter>
-    <ComboBox Grid.Row="1"
-              VerticalAlignment="Stretch"
-              Grid.Column="2"></ComboBox>
+    <TextBox Grid.Row="1"
+             VerticalAlignment="Stretch"
+             Grid.Column="2"></TextBox>
   </Grid>
 </UserControl>
