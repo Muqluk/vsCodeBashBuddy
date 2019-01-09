@@ -5,89 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:vsCodeBashBuddy"
-        xmlns:c="clr-namespace:vsCodeBashBuddy.ValueConverters"
+        xmlns:views="clr-namespace:vsCodeBashBuddy.View"
         mc:Ignorable="d"
         Title="vsCode Bash Buddy"
         SizeToContent="WidthAndHeight"
         MaxHeight="800"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
-  <Window.Resources>
-    <BooleanToVisibilityConverter x:Key="BoolToVis" />
-    <c:InverseVisibilityConverter x:Key="InverseVis"/>
-  </Window.Resources>
   <i:Interaction.Triggers>
     <i:EventTrigger EventName="Closing">
-      <i:InvokeCommandAction Command="{Binding HandleWindowClosingCmd}" CommandParameter="{Binding}"/>
+      <i:InvokeCommandAction Command="{Binding HandleWindowClosingCmd}"
+                             CommandParameter="{Binding}" />
     </i:EventTrigger>
   </i:Interaction.Triggers>
   <Grid Name="DisplayGrid">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
-      <RowDefinition Height="*"/>
-      <RowDefinition Height="auto"/>
-    </Grid.RowDefinitions>
-    <Button 
-      Grid.Row="0"
-      Command="{Binding ToggleErrorPanel}"
-      Content="Show Errors"/>
-    <ListBox 
-      Visibility="{Binding DisplayingErrors, Converter={StaticResource BoolToVis}}"
-      Grid.Row="1"
-      Grid.RowSpan="3"
-      Background="White"
-      Height="auto"
-      MinHeight="238"
-      MinWidth="400"
-      Width="auto"
-      VerticalAlignment="Stretch"
-      HorizontalAlignment="Stretch"
-      ScrollViewer.CanContentScroll="true"
-      ItemsSource="{Binding Errors}"/>
-    <ListBox 
-      Visibility="{Binding DisplayingErrors, Converter={StaticResource InverseVis}}"
-      Grid.Row="2"
-      Height="auto"
-      MinHeight="200"
-      MinWidth="400"
-      Width="auto"
-      VerticalAlignment="Stretch"
-      HorizontalAlignment="Stretch"
-      ScrollViewer.CanContentScroll="true"
-      ItemsSource="{Binding WatchedAppList}"/>
-    <WrapPanel 
-      Visibility="{Binding DisplayingErrors, Converter={StaticResource InverseVis}}"
-      Grid.Row="3" 
-      Margin="3 3 5 3">
-      <Button 
-        FontSize="20"
-        Grid.Row="1"
-        IsEnabled="{Binding ReloadAppsEnabled}" 
-        Command="{Binding ReloadWatchedAppsCmd}"
-        Width="auto"
-        HorizontalAlignment="Left"
-        VerticalAlignment="Top" 
-        Content="Reload" />
-      <StackPanel>
-        <WrapPanel>
-          <CheckBox IsChecked="{Binding AutoRefreshApps}" VerticalAlignment="Center" Margin="5 0 0 0" />
-          <Label Margin="0 -5 0 -5">Auto Update</Label>
-        </WrapPanel>
-        <WrapPanel>
-          <CheckBox IsChecked="{Binding IncludeBrowser}" VerticalAlignment="Center" Margin="5 0 0 0" />
-          <Label Margin="0 -5 0 -5">Include Browser</Label>
-        </WrapPanel>
-      </StackPanel>
-    </WrapPanel>
-    <Button 
-      Visibility="{Binding DisplayingErrors, Converter={StaticResource InverseVis}}"
-      Grid.Row="3"
-      Margin="3"
-      FontSize="20"
-      IsEnabled="{Binding KillButtonEnabled}" 
-      Command="{Binding KillSelectedAppsCmd}"
-      Width="auto"
-      HorizontalAlignment="Right"
-      VerticalAlignment="Top">Kill All</Button>
+    <views:ProcessWatcher />
   </Grid>
 </Window>
