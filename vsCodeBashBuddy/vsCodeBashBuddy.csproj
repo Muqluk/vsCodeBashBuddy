@@ -80,6 +80,9 @@
     <Compile Include="View\ProcessWatcher.xaml.cs">
       <DependentUpon>ProcessWatcher.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\vsCodeSettings.xaml.cs">
+      <DependentUpon>vsCodeSettings.xaml</DependentUpon>
+    </Compile>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -93,6 +96,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\ProcessWatcher.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\vsCodeSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

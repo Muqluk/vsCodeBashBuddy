@@ -18,6 +18,13 @@
     </i:EventTrigger>
   </i:Interaction.Triggers>
   <Grid Name="DisplayGrid">
-    <views:ProcessWatcher />
+    <TabControl>
+      <TabItem Header="vsCode Settings">
+        <views:vsCodeSettings VerticalAlignment="Stretch" />
+      </TabItem>
+      <TabItem Header="Processes">
+        <views:ProcessWatcher />
+      </TabItem>
+    </TabControl>
   </Grid>
 </Window>
