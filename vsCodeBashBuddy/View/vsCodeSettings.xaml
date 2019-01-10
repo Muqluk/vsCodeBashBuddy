@@ -8,11 +8,14 @@
              xmlns:local="clr-namespace:vsCodeBashBuddy.View"
              xmlns:model="clr-namespace:vsCodeBashBuddy.Model"
              mc:Ignorable="d">
-  <Grid MinHeight="200" MinWidth="500">
+  <Grid MinHeight="200"
+        MinWidth="500">
     <Grid.ColumnDefinitions>
-      <ColumnDefinition MinWidth="100" Width="2*" />
+      <ColumnDefinition MinWidth="100"
+                        Width="2*" />
       <ColumnDefinition Width="3" />
-      <ColumnDefinition MinWidth="100" Width="5*" />
+      <ColumnDefinition MinWidth="100"
+                        Width="5*" />
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
@@ -20,18 +23,23 @@
       <RowDefinition Height="*" />
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
-    <ComboBox Grid.Row="1" Grid.Column="0"></ComboBox>
+    <ComboBox Grid.Row="1"
+              Grid.Column="0"
+              ItemsSource="{Binding RepositoriesRoot }"
+              DisplayMemberPath="Name"
+              SelectedItem="{Binding Path=CurrentRepository}"></ComboBox>
     <!--
         https://stackoverflow.com/questions/1385372/how-to-make-gridview-a-child-element-of-a-treeview-in-wpf-application   
       -->
     <TreeView Grid.Row="2"
               Grid.Column="0"
-              ItemsSource="{Binding RepositoryFolder}">
+              ItemsSource="{Binding CurrentRepository, NotifyOnSourceUpdated=True}">
       <TreeView.ItemTemplate>
-        <HierarchicalDataTemplate DataType="{x:Type model:Folder}" ItemsSource="{Binding Path=SubFolders}">
+        <HierarchicalDataTemplate DataType="{x:Type model:Folder}"
+                                  ItemsSource="{Binding Path=SubFolders}">
           <WrapPanel>
             <!--<CheckBox Checked="{Binding Path=IsHidden}"/>-->
-            <TextBlock Text="{Binding Path=Name}"/>
+            <TextBlock Text="{Binding Path=Name}" />
           </WrapPanel>
         </HierarchicalDataTemplate>
       </TreeView.ItemTemplate>
@@ -41,13 +49,13 @@
                   Grid.RowSpan="2"
                   Width="3"
                   VerticalAlignment="Stretch"
-                  HorizontalAlignment="Stretch">
-    </GridSplitter>
+                  HorizontalAlignment="Stretch"></GridSplitter>
     <StatusBar Grid.ColumnSpan="3"
                Grid.Row="3"
                Height="20"
                Visibility="Collapsed">
-      <StatusBarItem VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+      <StatusBarItem VerticalAlignment="Stretch"
+                     HorizontalAlignment="Stretch">
         <!--<Border Background="LightGray" 
                 BorderBrush="DarkGray" 
                 BorderThickness=".5"
@@ -62,10 +70,10 @@
             <Border.Effect>
               <DropShadowEffect ShadowDepth="1" BlurRadius="1"/>
             </Border.Effect>-->
-        <TextBlock  Height="15" 
-                       FontSize="10" 
-                       Padding="5 1" 
-                       Text="temp text"/>
+        <TextBlock  Height="15"
+                    FontSize="10"
+                    Padding="5 1"
+                    Text="temp text" />
         <!--</Border>
         </Border>-->
       </StatusBarItem>

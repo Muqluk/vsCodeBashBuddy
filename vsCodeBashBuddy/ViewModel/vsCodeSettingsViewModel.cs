@@ -10,44 +10,45 @@ namespace vsCodeBashBuddy.ViewModel {
   public class vsCodeSettingsViewModel : ViewModelBase {
     const string startupPath = @"C:\repo";
 
-    //private IRepository _repositoryRoot;
+    private IFolder _currentRepository;
 
-    //public IRepository RepositoryRoot {
-    //  get {
-    //    return _repositoryRoot;
-    //  }
-    //  set {
-    //    if (value != _repositoryRoot) {
-    //      _repositoryRoot = value;
-    //      RaisePropertyChanged("RepositoryRoot");
-    //    }
-    //  }
-    //}
-
-
-    private ObservableCollection<IFolder> _repositoryFolder;
-
-    public ObservableCollection<IFolder> RepositoryFolder {
+    public IFolder CurrentRepository {
       get {
-        return _repositoryFolder;
+        return _currentRepository;
       }
       set {
-        if (value != _repositoryFolder) {
-          _repositoryFolder = value;
-          RaisePropertyChanged("RepositoryFolder");
+        if (value != _currentRepository) {
+          _currentRepository = null;
+          RaisePropertyChanged("CurrentRepository");
+          _currentRepository = value;
+          RaisePropertyChanged("CurrentRepository");
+        }
+      }
+    }
+
+
+    private ObservableCollection<IFolder> _repositoriesRoot;
+
+    public ObservableCollection<IFolder> RepositoriesRoot {
+      get {
+        return _repositoriesRoot;
+      }
+      set {
+        if (value != _repositoriesRoot) {
+          _repositoriesRoot = value;
+          RaisePropertyChanged("RepositoriesRoot");
         }
       }
     }
 
     public vsCodeSettingsViewModel() {
-      RepositoryFolder = new ObservableCollection<IFolder>();
+      RepositoriesRoot = new ObservableCollection<IFolder>();
       var dir = new DirectoryInfo(startupPath);
       foreach (var d in dir.GetDirectories()) {
-        RepositoryFolder.Add(new Folder(d));
+        RepositoriesRoot.Add(new Folder(d));
       }
-
     }
-    
+
 
   }
 }
