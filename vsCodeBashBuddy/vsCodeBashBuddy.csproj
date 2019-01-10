@@ -76,6 +76,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\File.cs" />
+    <Compile Include="Model\Folder.cs" />
+    <Compile Include="Model\Repository.cs" />
     <Compile Include="ValueConverters\InverseVisibilityConverter.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ProcessWatcherViewModel.cs" />
@@ -135,9 +138,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="download_zie_icon.ico" />
   </ItemGroup>

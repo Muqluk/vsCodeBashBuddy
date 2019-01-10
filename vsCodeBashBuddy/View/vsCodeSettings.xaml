@@ -3,8 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:vsCodeBashBuddy.View"
+             DataContext="{Binding Source={StaticResource Locator}, Path=vsCodeSettings}"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:local="clr-namespace:vsCodeBashBuddy.View"
+             xmlns:model="clr-namespace:vsCodeBashBuddy.Model"
              mc:Ignorable="d">
   <Grid MinHeight="200" MinWidth="500">
     <Grid.ColumnDefinitions>
@@ -19,18 +21,20 @@
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
     <ComboBox Grid.Row="1" Grid.Column="0"></ComboBox>
-    <TreeView Grid.Row="2"
-              VerticalAlignment="Stretch"
-              Grid.Column="0">
-      <!--
-      <i:Interaction.Triggers>
-        
-      </i:Interaction.Triggers>
-      
-      <HierarchicalDataTemplate DataType="" ItemsSource="RepositoryRoot">
-
-      </HierarchicalDataTemplate>
+    <!--
+        https://stackoverflow.com/questions/1385372/how-to-make-gridview-a-child-element-of-a-treeview-in-wpf-application   
       -->
+    <TreeView Grid.Row="2"
+              Grid.Column="0"
+              ItemsSource="{Binding RepositoryFolder}">
+      <TreeView.ItemTemplate>
+        <HierarchicalDataTemplate DataType="{x:Type model:Folder}" ItemsSource="{Binding Path=SubFolders}">
+          <WrapPanel>
+            <!--<CheckBox Checked="{Binding Path=IsHidden}"/>-->
+            <TextBlock Text="{Binding Path=Name}"/>
+          </WrapPanel>
+        </HierarchicalDataTemplate>
+      </TreeView.ItemTemplate>
     </TreeView>
     <GridSplitter Grid.Column="1"
                   Grid.Row="1"
@@ -41,7 +45,8 @@
     </GridSplitter>
     <StatusBar Grid.ColumnSpan="3"
                Grid.Row="3"
-               Height="20">
+               Height="20"
+               Visibility="Collapsed">
       <StatusBarItem VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <!--<Border Background="LightGray" 
                 BorderBrush="DarkGray" 
@@ -57,13 +62,22 @@
             <Border.Effect>
               <DropShadowEffect ShadowDepth="1" BlurRadius="1"/>
             </Border.Effect>-->
-            <TextBlock  Height="15" 
+        <TextBlock  Height="15" 
                        FontSize="10" 
                        Padding="5 1" 
                        Text="temp text"/>
-          <!--</Border>
+        <!--</Border>
         </Border>-->
       </StatusBarItem>
     </StatusBar>
   </Grid>
 </UserControl>
+<!--<ListView ItemsSource="{Binding Path=Files}">
+            <ListViewItem>
+              <WrapPanel>
+                <CheckBox Checked="{Binding Path=IsHidden}"/>
+                <TextBlock Text="{Binding Name}"/>
+              </WrapPanel>
+            </ListViewItem>
+          </ListView>-->
+<!--</StackPanel>-->
