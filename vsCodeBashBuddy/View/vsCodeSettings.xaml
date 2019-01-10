@@ -4,31 +4,66 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:vsCodeBashBuddy.View"
-             mc:Ignorable="d"
-             Background="Aqua">
-  <Grid MinHeight="350"
-        MinWidth="500">
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             mc:Ignorable="d">
+  <Grid MinHeight="200" MinWidth="500">
     <Grid.ColumnDefinitions>
-      <ColumnDefinition MinWidth="100"
-                        Width="2*" />
-      <ColumnDefinition Width="5" />
-      <ColumnDefinition MinWidth="100"
-                        Width="5*" />
+      <ColumnDefinition MinWidth="100" Width="2*" />
+      <ColumnDefinition Width="3" />
+      <ColumnDefinition MinWidth="100" Width="5*" />
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
-      <RowDefinition Height="auto"></RowDefinition>
-      <RowDefinition Height="*"></RowDefinition>
-      <RowDefinition Height="auto"></RowDefinition>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
-    <TreeView Grid.Row="1"
+    <ComboBox Grid.Row="1" Grid.Column="0"></ComboBox>
+    <TreeView Grid.Row="2"
               VerticalAlignment="Stretch"
-              Grid.Column="0"></TreeView>
+              Grid.Column="0">
+      <!--
+      <i:Interaction.Triggers>
+        
+      </i:Interaction.Triggers>
+      
+      <HierarchicalDataTemplate DataType="" ItemsSource="RepositoryRoot">
+
+      </HierarchicalDataTemplate>
+      -->
+    </TreeView>
     <GridSplitter Grid.Column="1"
+                  Grid.Row="1"
+                  Grid.RowSpan="2"
+                  Width="3"
                   VerticalAlignment="Stretch"
-                  HorizontalAlignment="Stretch"
-                  Grid.Row="1"></GridSplitter>
-    <TextBox Grid.Row="1"
-             VerticalAlignment="Stretch"
-             Grid.Column="2"></TextBox>
+                  HorizontalAlignment="Stretch">
+    </GridSplitter>
+    <StatusBar Grid.ColumnSpan="3"
+               Grid.Row="3"
+               Height="20">
+      <StatusBarItem VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <!--<Border Background="LightGray" 
+                BorderBrush="DarkGray" 
+                BorderThickness=".5"
+                Margin="0 -2"
+                ClipToBounds="True">
+          <Border Background="Transparent" 
+                  BorderBrush="Black"
+                  BorderThickness="1 1 .5 .5" 
+                  Padding="1"
+                  Margin="-2"
+                  ClipToBounds="True">
+            <Border.Effect>
+              <DropShadowEffect ShadowDepth="1" BlurRadius="1"/>
+            </Border.Effect>-->
+            <TextBlock  Height="15" 
+                       FontSize="10" 
+                       Padding="5 1" 
+                       Text="temp text"/>
+          <!--</Border>
+        </Border>-->
+      </StatusBarItem>
+    </StatusBar>
   </Grid>
 </UserControl>

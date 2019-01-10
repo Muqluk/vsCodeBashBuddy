@@ -21,18 +21,9 @@ namespace vsCodeBashBuddy.ViewModel {
     public ViewModelLocator() {
       ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-      /*
-        if (ViewModelBase.IsInDesignModeStatic) {
-          // Create design time view services and models
-          SimpleIoc.Default.Register<IDataService, DesignDataService>();
-        } else {
-          // Create run time view services and models
-          SimpleIoc.Default.Register<IDataService, DataService>();
-        }
-      */
-
       SimpleIoc.Default.Register<MainViewModel>();
       SimpleIoc.Default.Register<ProcessWatcherViewModel>();
+      SimpleIoc.Default.Register<vsCodeSettingsViewModel>();
     }
 
     public MainViewModel Main {
@@ -44,6 +35,12 @@ namespace vsCodeBashBuddy.ViewModel {
     public ProcessWatcherViewModel ProcessWatcher {
       get {
         return ServiceLocator.Current.GetInstance<ProcessWatcherViewModel>();
+      }
+    }
+
+    public vsCodeSettingsViewModel vsCodeSettings {
+      get {
+        return ServiceLocator.Current.GetInstance<vsCodeSettingsViewModel>();
       }
     }
 

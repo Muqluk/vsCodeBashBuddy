@@ -8,8 +8,9 @@
         xmlns:views="clr-namespace:vsCodeBashBuddy.View"
         mc:Ignorable="d"
         Title="vsCode Bash Buddy"
-        SizeToContent="WidthAndHeight"
         MaxHeight="800"
+        Width="500"
+        Height="300"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
   <i:Interaction.Triggers>
     <i:EventTrigger EventName="Closing">
@@ -18,7 +19,31 @@
     </i:EventTrigger>
   </i:Interaction.Triggers>
   <Grid Name="DisplayGrid">
-    <TabControl>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Menu Grid.ColumnSpan="3" 
+          Grid.Row="0" 
+          Margin="0 0 0 5"
+          HorizontalAlignment="Stretch"
+          Background="Transparent">
+      <MenuItem Header="_File">
+        <MenuItem Header="_Set Repositories Folder"/>
+      </MenuItem>
+      <MenuItem Header="_Plugin Settings">
+        <MenuItem Header="_vsCode Settings">
+          <MenuItem Header="_Set.git Repo Root"/>
+        </MenuItem>
+      </MenuItem>
+      <MenuItem Header="_Options">
+        <MenuItem Header="_Settings"/>
+      </MenuItem>
+      <MenuItem HorizontalAlignment="Right" Header="_About">
+        <MenuItem Header="_Settings"/>
+      </MenuItem>
+    </Menu>
+    <TabControl Grid.Row="1">
       <TabItem Header="vsCode Settings">
         <views:vsCodeSettings VerticalAlignment="Stretch" />
       </TabItem>
