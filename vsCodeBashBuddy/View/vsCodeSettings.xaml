@@ -33,14 +33,23 @@
       -->
     <TreeView Grid.Row="2"
               Grid.Column="0"
-              ItemsSource="{Binding CurrentRepository, NotifyOnSourceUpdated=True}">
+              ItemsSource="{Binding ActiveRepository}">
       <TreeView.ItemTemplate>
         <HierarchicalDataTemplate DataType="{x:Type model:Folder}"
                                   ItemsSource="{Binding Path=SubFolders}">
-          <WrapPanel>
-            <!--<CheckBox Checked="{Binding Path=IsHidden}"/>-->
-            <TextBlock Text="{Binding Path=Name}" />
-          </WrapPanel>
+          <!--<StackPanel>-->
+            <WrapPanel>
+              <CheckBox IsChecked="{Binding Path=IsHidden}" Margin="0,0,10,0"/>
+              <TextBlock Text="{Binding Path=Name}" />
+            </WrapPanel>
+            <!--<ItemsControl ItemsSource="{Binding Path=Files}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Path=Name}"/>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>-->
         </HierarchicalDataTemplate>
       </TreeView.ItemTemplate>
     </TreeView>

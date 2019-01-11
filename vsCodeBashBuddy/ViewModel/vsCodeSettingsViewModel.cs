@@ -11,24 +11,24 @@ namespace vsCodeBashBuddy.ViewModel {
     const string startupPath = @"C:\repo";
 
     private IFolder _currentRepository;
-
     public IFolder CurrentRepository {
       get {
         return _currentRepository;
       }
       set {
         if (value != _currentRepository) {
-          _currentRepository = null;
-          RaisePropertyChanged("CurrentRepository");
           _currentRepository = value;
+          ActiveRepository = new ObservableCollection<IFolder>();
+          foreach (var folder in _currentRepository.SubFolders) {
+            ActiveRepository.Add(folder);
+          }
+          //ActiveRepository.Add(_currentRepository);
           RaisePropertyChanged("CurrentRepository");
         }
       }
     }
 
-
     private ObservableCollection<IFolder> _repositoriesRoot;
-
     public ObservableCollection<IFolder> RepositoriesRoot {
       get {
         return _repositoriesRoot;
@@ -37,6 +37,19 @@ namespace vsCodeBashBuddy.ViewModel {
         if (value != _repositoriesRoot) {
           _repositoriesRoot = value;
           RaisePropertyChanged("RepositoriesRoot");
+        }
+      }
+    }
+
+    private ObservableCollection<IFolder> _activeRepository;
+    public ObservableCollection<IFolder> ActiveRepository {
+      get {
+        return _activeRepository;
+      }
+      set {
+        if (value != _activeRepository) {
+          _activeRepository = value;
+          RaisePropertyChanged("ActiveRepository");
         }
       }
     }
