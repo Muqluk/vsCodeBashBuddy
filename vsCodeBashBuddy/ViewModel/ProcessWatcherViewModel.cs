@@ -12,6 +12,8 @@ namespace vsCodeBashBuddy.ViewModel {
     #region statics
     static string [] watchedApps = { "bash", "cmd", "conhost", "git - bash", "mintty", "mongod", "node" };
     static string [] browsers = { "iexplore", "chrome", "firefox" };
+
+    static string [] nuisanceApps = { };
     #endregion
 
     #region members
@@ -23,12 +25,12 @@ namespace vsCodeBashBuddy.ViewModel {
     private bool _reloadAppsEnabled = true;
     private bool _killButtonEnabled = true;
     private bool _displayingErrors = false;
+    private bool _includeNuisanceApps = false;
     private IEnumerable<string> _watchedAppList;
     private IEnumerable<string> _errorsList;
     private string [] _currentWatchList = watchedApps;
 
     #endregion
-
 
     #region Properties
 
@@ -119,6 +121,16 @@ namespace vsCodeBashBuddy.ViewModel {
         if (value != _displayingErrors) {
           _displayingErrors = value;
           RaisePropertyChanged("DisplayingErrors");
+        }
+      }
+    }
+
+    public bool IncludeNuisanceApps {
+      get { return _includeNuisanceApps; }
+      set {
+        if (value != _includeNuisanceApps) {
+          _includeNuisanceApps = value;
+          RaisePropertyChanged("IncludeNuisanceApps");
         }
       }
     }
@@ -215,21 +227,25 @@ namespace vsCodeBashBuddy.ViewModel {
     }
 
     private void KillSelectedApps() {
-      var processes = Process.GetProcesses();
-      var apps = Enumerable.Empty<string>();
+      try {
+        var processes = Process.GetProcesses();
+        var apps = Enumerable.Empty<string>();
 
-      foreach (var proc in processes) {
-        if (_currentWatchList.Contains(proc.ProcessName)) {
-          try {
-            proc.Kill();
-          } catch (Exception ex) {
-            ErrorsList = ErrorsList.Concat<string>(new [] { ex.Message });
+        foreach (var proc in processes) {
+          if (_currentWatchList.Contains(proc.ProcessName)) {
+            try {
+              proc.Kill();
+            } catch (Exception ex) {
+              ErrorsList = ErrorsList.Concat<string>(new [] { ex.Message });
+            }
           }
         }
-      }
 
-      if (!AutoRefreshApps) {
-        ReloadWatchedApps();
+        if (!AutoRefreshApps) {
+          ReloadWatchedApps();
+        }
+      } catch (Exception ex) {
+        System.Windows.MessageBox.Show(ex.Message);
       }
     }
 

@@ -51,20 +51,30 @@
               HorizontalAlignment="Left"
               VerticalAlignment="Top"
               Content="Reload" />
-      <StackPanel>
-        <WrapPanel>
-          <CheckBox IsChecked="{Binding AutoRefreshApps}"
-                    VerticalAlignment="Center"
-                    Margin="5 0 0 0" />
-          <Label Margin="0 -5 0 -5">Auto Update</Label>
-        </WrapPanel>
-        <WrapPanel>
-          <CheckBox IsChecked="{Binding IncludeBrowser}"
-                    VerticalAlignment="Center"
-                    Margin="5 0 0 0" />
-          <Label Margin="0 -5 0 -5">Include Browser</Label>
-        </WrapPanel>
-      </StackPanel>
+      <WrapPanel>
+        <StackPanel>
+          <WrapPanel>
+            <CheckBox IsChecked="{Binding AutoRefreshApps}"
+                      VerticalAlignment="Center"
+                      Margin="5 0 0 0" />
+            <Label Margin="0 -5 0 -5">Auto Update</Label>
+          </WrapPanel>
+          <WrapPanel>
+            <CheckBox IsChecked="{Binding IncludeBrowser}"
+                      VerticalAlignment="Center"
+                      Margin="5 0 0 0" />
+            <Label Margin="0 -5 0 -5">Include Browser</Label>
+          </WrapPanel>
+        </StackPanel>
+        <StackPanel>
+          <WrapPanel>
+            <CheckBox IsChecked="{Binding IncludeNuisanceApps}"
+                      VerticalAlignment="Center"
+                      Margin="5 0 0 0" />
+            <Label Margin="0 -5 0 -5">Nuisance Apps</Label>
+          </WrapPanel>
+        </StackPanel>
+      </WrapPanel>
     </WrapPanel>
     <Button Visibility="{Binding DisplayingErrors, Converter={StaticResource InverseVis}}"
             Grid.Row="3"

@@ -38,18 +38,11 @@
         <HierarchicalDataTemplate DataType="{x:Type model:Folder}"
                                   ItemsSource="{Binding Path=SubFolders}">
           <!--<StackPanel>-->
-            <WrapPanel>
-              <CheckBox IsChecked="{Binding Path=IsHidden}" Margin="0,0,10,0"/>
-              <TextBlock Text="{Binding Path=Name}" />
-            </WrapPanel>
-            <!--<ItemsControl ItemsSource="{Binding Path=Files}">
-              <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                  <TextBlock Text="{Binding Path=Name}"/>
-                </DataTemplate>
-              </ItemsControl.ItemTemplate>
-            </ItemsControl>
-          </StackPanel>-->
+          <WrapPanel>
+            <CheckBox IsChecked="{Binding Path=IsHidden}"
+                      Margin="0,0,10,0" />
+            <TextBlock Text="{Binding Path=Name}" />
+          </WrapPanel>
         </HierarchicalDataTemplate>
       </TreeView.ItemTemplate>
     </TreeView>
@@ -59,26 +52,29 @@
                   Width="3"
                   VerticalAlignment="Stretch"
                   HorizontalAlignment="Stretch"></GridSplitter>
+    <Border Grid.Column="2"
+            Grid.RowSpan="2"
+            Grid.Row="1">
+      <ListView VerticalAlignment="Stretch"
+                HorizontalAlignment="Stretch"
+                ScrollViewer.CanContentScroll="True"
+                ItemsSource="{Binding CurrentProcesses}">
+        <ListView.View>
+          <GridView>
+            <GridViewColumn Header="Instances"
+                            DisplayMemberBinding="{Binding Path=instances}" />
+            <GridViewColumn Header="Instances"
+                            DisplayMemberBinding="{Binding Path=Name}" />
+          </GridView>
+        </ListView.View>
+      </ListView>
+    </Border>
     <StatusBar Grid.ColumnSpan="3"
                Grid.Row="3"
                Height="20"
                Visibility="Collapsed">
       <StatusBarItem VerticalAlignment="Stretch"
                      HorizontalAlignment="Stretch">
-        <!--<Border Background="LightGray" 
-                BorderBrush="DarkGray" 
-                BorderThickness=".5"
-                Margin="0 -2"
-                ClipToBounds="True">
-          <Border Background="Transparent" 
-                  BorderBrush="Black"
-                  BorderThickness="1 1 .5 .5" 
-                  Padding="1"
-                  Margin="-2"
-                  ClipToBounds="True">
-            <Border.Effect>
-              <DropShadowEffect ShadowDepth="1" BlurRadius="1"/>
-            </Border.Effect>-->
         <TextBlock  Height="15"
                     FontSize="10"
                     Padding="5 1"
@@ -89,12 +85,3 @@
     </StatusBar>
   </Grid>
 </UserControl>
-<!--<ListView ItemsSource="{Binding Path=Files}">
-            <ListViewItem>
-              <WrapPanel>
-                <CheckBox Checked="{Binding Path=IsHidden}"/>
-                <TextBlock Text="{Binding Name}"/>
-              </WrapPanel>
-            </ListViewItem>
-          </ListView>-->
-<!--</StackPanel>-->
