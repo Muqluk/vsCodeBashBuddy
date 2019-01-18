@@ -255,5 +255,10 @@ namespace vsCodeBashBuddy.ViewModel {
 
     #endregion
 
+    #region base overrides
+    public override void RegisterThreads() { }
+    public override void DisposeThreads() { }
+    #endregion
+
   }
 }

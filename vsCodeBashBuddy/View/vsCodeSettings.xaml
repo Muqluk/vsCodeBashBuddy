@@ -3,11 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             DataContext="{Binding Source={StaticResource Locator}, Path=vsCodeSettings}"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:local="clr-namespace:vsCodeBashBuddy.View"
              xmlns:model="clr-namespace:vsCodeBashBuddy.Model"
              mc:Ignorable="d">
+             <!--DataContext="{
+              Binding Source={StaticResource Locator}, 
+              BindingGroupName=ViewModels,
+              Path=Main
+              }"-->
   <Grid MinHeight="200"
         MinWidth="500">
     <Grid.ColumnDefinitions>
@@ -29,18 +33,21 @@
               DisplayMemberPath="Name"
               SelectedItem="{Binding Path=CurrentRepository}"></ComboBox>
     <!--
-        https://stackoverflow.com/questions/1385372/how-to-make-gridview-a-child-element-of-a-treeview-in-wpf-application   
-      -->
-    <TreeView Grid.Row="2"
-              Grid.Column="0"
-              ItemsSource="{Binding ActiveRepository}">
+      https://stackoverflow.com/questions/1385372/how-to-make-gridview-a-child-element-of-a-treeview-in-wpf-application   
+    -->
+    <TreeView 
+      Grid.Row="2"
+      Grid.Column="0"
+      ItemsSource="{Binding ActiveRepository}">
       <TreeView.ItemTemplate>
-        <HierarchicalDataTemplate DataType="{x:Type model:Folder}"
-                                  ItemsSource="{Binding Path=SubFolders}">
+        <HierarchicalDataTemplate 
+          DataType="{x:Type model:Folder}"
+          ItemsSource="{Binding Path=SubFolders}">
           <!--<StackPanel>-->
           <WrapPanel>
-            <CheckBox IsChecked="{Binding Path=IsHidden}"
-                      Margin="0,0,10,0" />
+            <CheckBox 
+              IsChecked="{Binding Path=IsHidden}"
+              Margin="0,0,10,0" />
             <TextBlock Text="{Binding Path=Name}" />
           </WrapPanel>
         </HierarchicalDataTemplate>
@@ -52,33 +59,24 @@
                   Width="3"
                   VerticalAlignment="Stretch"
                   HorizontalAlignment="Stretch"></GridSplitter>
-    <Border Grid.Column="2"
-            Grid.RowSpan="2"
-            Grid.Row="1">
-      <ListView VerticalAlignment="Stretch"
-                HorizontalAlignment="Stretch"
-                ScrollViewer.CanContentScroll="True"
-                ItemsSource="{Binding CurrentProcesses}">
-        <ListView.View>
-          <GridView>
-            <GridViewColumn Header="Instances"
-                            DisplayMemberBinding="{Binding Path=instances}" />
-            <GridViewColumn Header="Instances"
-                            DisplayMemberBinding="{Binding Path=Name}" />
-          </GridView>
-        </ListView.View>
-      </ListView>
+    <Border 
+      Grid.Column="2"
+      Grid.RowSpan="2"
+      Grid.Row="1">
     </Border>
-    <StatusBar Grid.ColumnSpan="3"
-               Grid.Row="3"
-               Height="20"
-               Visibility="Collapsed">
-      <StatusBarItem VerticalAlignment="Stretch"
-                     HorizontalAlignment="Stretch">
-        <TextBlock  Height="15"
-                    FontSize="10"
-                    Padding="5 1"
-                    Text="temp text" />
+    <StatusBar 
+      Grid.ColumnSpan="3"
+      Grid.Row="3"
+      Height="20"
+      Visibility="Collapsed">
+      <StatusBarItem 
+        VerticalAlignment="Stretch"
+        HorizontalAlignment="Stretch">
+        <TextBlock  
+          Height="15"
+          FontSize="10"
+          Padding="5 1"
+          Text="temp text" />
         <!--</Border>
         </Border>-->
       </StatusBarItem>

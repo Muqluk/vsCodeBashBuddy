@@ -76,20 +76,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BaseClasses\ViewModelBase.cs" />
     <Compile Include="Model\File.cs" />
     <Compile Include="Model\Folder.cs" />
     <Compile Include="Model\Repository.cs" />
     <Compile Include="ValueConverters\InverseVisibilityConverter.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\ProcessMonitorViewModel.cs" />
     <Compile Include="ViewModel\ProcessWatcherViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="BaseClasses\ViewModelLocator.cs" />
     <Compile Include="ViewModel\vsCodeSettingsViewModel.cs" />
+    <Compile Include="View\ProcessMonitor.xaml.cs">
+      <DependentUpon>ProcessMonitor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ProcessWatcher.xaml.cs">
       <DependentUpon>ProcessWatcher.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\vsCodeSettings.xaml.cs">
       <DependentUpon>vsCodeSettings.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\ProcessMonitor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

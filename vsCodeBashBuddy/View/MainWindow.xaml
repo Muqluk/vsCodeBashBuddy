@@ -10,8 +10,8 @@
         Title="vsCode Bash Buddy"
         MaxHeight="800"
         Width="500"
-        Height="300"
-        DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
+        Height="300">
+        <!--DataContext="{Binding Source={StaticResource Locator}, Path=ViewModels[Main]}"-->
   <i:Interaction.Triggers>
     <i:EventTrigger EventName="Closing">
       <i:InvokeCommandAction Command="{Binding HandleWindowClosingCmd}"
@@ -50,6 +50,9 @@
       </TabItem>
       <TabItem Header="Processes">
         <views:ProcessWatcher />
+      </TabItem>
+      <TabItem Header="Process Monitor">
+        <views:ProcessMonitor/>
       </TabItem>
     </TabControl>
   </Grid>

@@ -17,18 +17,13 @@ namespace vsCodeBashBuddy.ViewModel {
     // perform all application thread clean up.
     private void HandleWindowClosing() {
       int attempts = 0;
-
-      //if (appsWatcher != null) {
-      //  while (_autoRefreshApps || appsWatcher.IsAlive || attempts >= 50) {
-      //    this.AutoRefreshApps = false;
-      //    Thread.Sleep(50);
-      //  }
-      //  if (attempts >= 5) { // hard kill it.
-      //    appsWatcher.Abort();
-      //  }
-      //}
     }
 
+    #endregion
+
+    #region base overrides
+    public override void RegisterThreads() { }
+    public override void DisposeThreads() { }
     #endregion
   }
 }
