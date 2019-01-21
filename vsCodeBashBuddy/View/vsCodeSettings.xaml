@@ -7,11 +7,6 @@
              xmlns:local="clr-namespace:vsCodeBashBuddy.View"
              xmlns:model="clr-namespace:vsCodeBashBuddy.Model"
              mc:Ignorable="d">
-             <!--DataContext="{
-              Binding Source={StaticResource Locator}, 
-              BindingGroupName=ViewModels,
-              Path=Main
-              }"-->
   <Grid MinHeight="200"
         MinWidth="500">
     <Grid.ColumnDefinitions>

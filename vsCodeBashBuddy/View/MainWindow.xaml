@@ -11,7 +11,6 @@
         MaxHeight="800"
         Width="500"
         Height="300">
-        <!--DataContext="{Binding Source={StaticResource Locator}, Path=ViewModels[Main]}"-->
   <i:Interaction.Triggers>
     <i:EventTrigger EventName="Closing">
       <i:InvokeCommandAction Command="{Binding HandleWindowClosingCmd}"
@@ -44,7 +43,9 @@
         <MenuItem Header="_Settings"/>
       </MenuItem>
     </Menu>
-    <TabControl Grid.Row="1">
+    <TabControl 
+      Grid.Row="1"
+      ItemsSource="{Binding Tabs}">
       <TabItem Header="vsCode Settings">
         <views:vsCodeSettings VerticalAlignment="Stretch" />
       </TabItem>
