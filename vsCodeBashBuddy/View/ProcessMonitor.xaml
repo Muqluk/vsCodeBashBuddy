@@ -7,11 +7,7 @@
   xmlns:sys="clr-namespace:System;assembly=mscorlib"
   xmlns:local="clr-namespace:vsCodeBashBuddy.View"
   mc:Ignorable="d">
-  <!--DataContext="{Binding Source={StaticResource Locator}, Path=ProcessMonitor}"-->
   <UserControl.Resources>
-    <!--
-      https://social.msdn.microsoft.com/Forums/vstudio/en-US/656ae800-1641-40a0-981a-2f1965952def/how-to-format-numbers-in-xaml?forum=wpf
-    -->
     <sys:String x:Key="CommaFormat">{0:#,0} Mb</sys:String>
   </UserControl.Resources>
   <Border>
@@ -51,7 +47,7 @@
             DisplayMemberBinding="{Binding Path=Name}">
             <GridViewColumn.Header>
               <GridViewColumnHeader 
-                Command="{Binding SortByInstances}"
+                Command="{Binding SortByName}"
                 HorizontalContentAlignment="Stretch"
                 VerticalContentAlignment="Stretch">
                 <DockPanel>
@@ -65,7 +61,7 @@
             CellTemplate="{StaticResource privateMemoryTemplate}">
             <GridViewColumn.Header>
               <GridViewColumnHeader 
-                Command="{Binding SortByInstances}"
+                Command="{Binding SortByMemUsed}"
                 HorizontalContentAlignment="Stretch"
                 VerticalContentAlignment="Stretch">
                 <DockPanel>

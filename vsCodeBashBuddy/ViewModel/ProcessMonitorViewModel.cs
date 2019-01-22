@@ -7,6 +7,28 @@ using GalaSoft.MvvmLight.Command;
 namespace vsCodeBashBuddy.ViewModel {
   public class ProcessMonitorViewModel : ViewModelBase {
 
+    enum SortByType {
+      Asc = 0,
+      Desc = 1,
+      None = 2
+    }
+
+    private class Sorting {
+      string _sortByColumn;
+      string SortByColumn {
+        get {
+          return _sortByColumn;
+        }
+        set {
+          if (value != _sortByColumn) {
+            _sortByColumn = value;
+            Sort = SortByType.Asc;
+          }
+        }
+      }
+      SortByType Sort { get; set; } = SortByType.None;
+    }
+
     #region members
 
     private IList<RunningProcess> _currentProcesses;
@@ -27,6 +49,7 @@ namespace vsCodeBashBuddy.ViewModel {
       }
     }
 
+
     #endregion
 
     #region Commands
@@ -35,6 +58,24 @@ namespace vsCodeBashBuddy.ViewModel {
       get {
         return new RelayCommand(() => {
           CurrentProcesses = CurrentProcesses.OrderByDescending(x => x.instances).ToList();
+        },
+        () => true);
+      }
+    }
+
+    public RelayCommand SortByName {
+      get {
+        return new RelayCommand(() => {
+          CurrentProcesses = CurrentProcesses.OrderByDescending(x => x.Name).ToList();
+        },
+        () => true);
+      }
+    }
+
+    public RelayCommand SortByMemUsed {
+      get {
+        return new RelayCommand(() => {
+          CurrentProcesses = CurrentProcesses.OrderByDescending(x => x.privateMemory).ToList();
         },
         () => true);
       }
