@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
-using GalaSoft.MvvmLight;
+using System.Windows;
+
+//using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 
 namespace vsCodeBashBuddy.ViewModel {
@@ -50,10 +52,10 @@ namespace vsCodeBashBuddy.ViewModel {
         return _autoRefreshApps;
       }
       set {
+        if (value == true) {
+          MessageBox.Show("Not quite fully implemented dispose - so uncheck before exiting");
+        }
         if (value != _autoRefreshApps) {
-          if (value == true) {
-            System.Windows.MessageBox.Show("Reminder, currently threads are not stopped on application unload - so memory leak will exist.  Stop Threads manually.");
-          }
           _autoRefreshApps = value;
           if (_autoRefreshApps == true) {
             _requestStopRefreshApps = false;
@@ -61,7 +63,6 @@ namespace vsCodeBashBuddy.ViewModel {
             ReloadAppsEnabled = false;
           } else {
             _requestStopRefreshApps = true;
-            //requestRefreshAppsStop();
           }
           RaisePropertyChanged("AutoRefreshApps");
         }
@@ -188,14 +189,16 @@ namespace vsCodeBashBuddy.ViewModel {
       appsWatcher = new Thread(new ThreadStart(AppWatcher));
       appsWatcher.Start();
     }
+
     private void AppWatcher() {
 
       ReloadAppsEnabled = false;
-      while (_autoRefreshApps) {
+      while (_autoRefreshApps && _requestStopRefreshApps == false) {
         ReloadWatchedApps();
         Thread.Sleep(500);
       }
       _autoRefreshApps = false;
+      _requestStopRefreshApps = false;
       ReloadAppsEnabled = true;
     }
 
@@ -210,14 +213,16 @@ namespace vsCodeBashBuddy.ViewModel {
       try {
         foreach (var proc in processes) {
           if (_currentWatchList.Contains(proc.ProcessName)) {
-            apps = apps.Concat<string>(new [] { proc.ProcessName });
+            apps = apps.Concat(new [] { proc.ProcessName });
           }
+
           if (IncludeBrowser) {
             if (browsers.Contains(proc.ProcessName)) {
-              apps = apps.Concat<string>(new [] { proc.ProcessName });
+              apps = apps.Concat(new [] { proc.ProcessName });
             }
           }
-          System.Diagnostics.Debug.WriteLine(proc);
+
+          Debug.WriteLine(proc);
         }
       } catch (Exception e) {
         System.Windows.MessageBox.Show(e.Message);
@@ -257,7 +262,13 @@ namespace vsCodeBashBuddy.ViewModel {
 
     #region base overrides
     public override void RegisterThreads() { }
-    public override void DisposeThreads() { }
+    public override void DisposeThreads() {
+      RequestStopRefreshApps = true;
+      while (_autoRefreshApps) {
+        Thread.Sleep(50);
+      }
+      MessageBox.Show("it should now be stopped");
+    }
     #endregion
 
   }
