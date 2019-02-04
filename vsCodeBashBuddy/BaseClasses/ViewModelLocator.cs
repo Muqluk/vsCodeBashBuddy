@@ -63,11 +63,9 @@ namespace vsCodeBashBuddy.ViewModel {
       AppViewModelRegistry registry = AppViewModelRegistry.getRegistry;
       ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-      Assembly.GetExecutingAssembly()
-        .GetTypes()
+      Assembly.GetExecutingAssembly().GetTypes()
         .Where(t => t.GetInterfaces().Contains(typeof(IViewModelBase)) && !t.IsAbstract)
-        .ToList()
-        .ForEach(vm => {
+        .ToList().ForEach(vm => {
           var instance = Activator.CreateInstance(vm) as IViewModelBase;
           SimpleIoc.Default.Register<IViewModelBase>(() => vm as IViewModelBase, vm.Name);
           registry.ViewModels.Add(instance);
