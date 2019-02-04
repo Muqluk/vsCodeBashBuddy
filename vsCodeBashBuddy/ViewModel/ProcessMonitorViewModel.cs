@@ -104,6 +104,9 @@ namespace vsCodeBashBuddy.ViewModel {
           instances = pg.Count(),
           privateMemory = pg.Sum(sp => sp.PrivateMemorySize64) / 1024 / 1024,
         }).ToList();
+
+      CurrentProcesses.OrderBy(p => p.Name).ToList().ForEach(p => Debug.WriteLine(p.Name));
+
     }
 
     #endregion

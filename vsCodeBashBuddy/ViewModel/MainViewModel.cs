@@ -18,6 +18,10 @@ namespace vsCodeBashBuddy.ViewModel {
       get { return new RelayCommand(HandleWindowClosing, () => true); }
     }
 
+    public RelayCommand CheckDisposeThreadsRegistryCommand {
+      get { return new RelayCommand(HandleCheckRegistration, () => true); }
+    }
+
     public MainViewModel() {
       //var viewModels = (App.Current.Resources["Locator"] as ViewModel.ViewModelLocator).ViewModels.FindAll(c => c.Name != "Main");
       //Controls = new ObservableCollection<UserControl>();
@@ -45,6 +49,10 @@ namespace vsCodeBashBuddy.ViewModel {
     // perform all application thread clean up.
     private void HandleWindowClosing() {
       //int attempts = 0;
+    }
+
+    private void HandleCheckRegistration() {
+       
     }
 
     #endregion

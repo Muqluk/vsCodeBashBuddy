@@ -1,4 +1,6 @@
-﻿using MvvmViewModelBase = GalaSoft.MvvmLight.ViewModelBase;
+﻿using System;
+
+using MvvmViewModelBase = GalaSoft.MvvmLight.ViewModelBase;
 using GalaSoft.MvvmLight.Command;
 
 namespace vsCodeBashBuddy.ViewModel {

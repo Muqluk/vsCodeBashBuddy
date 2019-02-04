@@ -19,33 +19,43 @@
   </i:Interaction.Triggers>
   <Grid Name="DisplayGrid">
     <Grid.RowDefinitions>
-      <RowDefinition Height="auto"/>
-      <RowDefinition Height="*"/>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-    <Menu Grid.ColumnSpan="3" 
-          Grid.Row="0" 
+    <StackPanel Grid.Row="0"
+                Grid.ColumnSpan="2"
+                Orientation="Horizontal"
+                HorizontalAlignment="Stretch">
+      <Button Width="150"
+              Content="Check DisposeThreads Registration"
+              Command="{Binding CheckDisposeThreadsRegistryCommand}"
+              Height="25"></Button>
+    </StackPanel>
+    <Menu Grid.ColumnSpan="3"
+          Grid.Row="1"
           Margin="0 0 0 5"
           HorizontalAlignment="Stretch"
           Visibility="Collapsed"
           Background="Transparent">
       <MenuItem Header="_File">
-        <MenuItem Header="_Set Repositories Folder"/>
+        <MenuItem Header="_Set Repositories Folder" />
       </MenuItem>
       <MenuItem Header="_Plugin Settings">
         <MenuItem Header="_vsCode Settings">
-          <MenuItem Header="_Set.git Repo Root"/>
+          <MenuItem Header="_Set.git Repo Root" />
         </MenuItem>
       </MenuItem>
       <MenuItem Header="_Options">
-        <MenuItem Header="_Settings"/>
+        <MenuItem Header="_Settings" />
       </MenuItem>
-      <MenuItem HorizontalAlignment="Right" Header="_About">
-        <MenuItem Header="_Settings"/>
+      <MenuItem HorizontalAlignment="Right"
+                Header="_About">
+        <MenuItem Header="_Settings" />
       </MenuItem>
     </Menu>
-    <TabControl 
-      Grid.Row="1"
-      ItemsSource="{Binding Tabs}">
+    <TabControl Grid.Row="2"
+                ItemsSource="{Binding Tabs}">
       <TabItem Header="vsCode Settings">
         <views:vsCodeSettings VerticalAlignment="Stretch" />
       </TabItem>
@@ -53,7 +63,7 @@
         <views:ProcessWatcher />
       </TabItem>
       <TabItem Header="Process Monitor">
-        <views:ProcessMonitor/>
+        <views:ProcessMonitor />
       </TabItem>
     </TabControl>
   </Grid>

@@ -15,7 +15,7 @@ namespace vsCodeBashBuddy.ViewModel {
     static string [] watchedApps = { "bash", "cmd", "conhost", "git - bash", "mintty", "mongod", "node" };
     static string [] browsers = { "iexplore", "chrome", "firefox" };
 
-    static string [] nuisanceApps = { };
+    static string [] nuisanceApps = { "AppleMobileDeviceService", "GoogleCrashHandler", "GoogleCrashHandler64", "Microsoft.Photos", "OfficeClickToRun", "OfficeHubTaskHost", "SkypeApp", "SkypeBackgroundHost", "Teams" };
     #endregion
 
     #region members
@@ -27,7 +27,8 @@ namespace vsCodeBashBuddy.ViewModel {
     private bool _reloadAppsEnabled = true;
     private bool _killButtonEnabled = true;
     private bool _displayingErrors = false;
-    private bool _includeNuisanceApps = false;
+    //private bool _includeNuisanceApps = false;
+    private bool _justNuisanceApps = false;
     private IEnumerable<string> _watchedAppList;
     private IEnumerable<string> _errorsList;
     private string [] _currentWatchList = watchedApps;
@@ -126,12 +127,22 @@ namespace vsCodeBashBuddy.ViewModel {
       }
     }
 
-    public bool IncludeNuisanceApps {
-      get { return _includeNuisanceApps; }
+    //public bool IncludeNuisanceApps {
+    //  get { return _includeNuisanceApps; }
+    //  set {
+    //    if (value != _includeNuisanceApps) {
+    //      _includeNuisanceApps = value;
+    //      RaisePropertyChanged("IncludeNuisanceApps");
+    //    }
+    //  }
+    //}
+
+    public bool JustNuisanceApps {
+      get { return _justNuisanceApps; }
       set {
-        if (value != _includeNuisanceApps) {
-          _includeNuisanceApps = value;
-          RaisePropertyChanged("IncludeNuisanceApps");
+        if (value != _justNuisanceApps) {
+          _justNuisanceApps = value;
+          RaisePropertyChanged("JustNuisanceApps");
         }
       }
     }
@@ -212,17 +223,22 @@ namespace vsCodeBashBuddy.ViewModel {
 
       try {
         foreach (var proc in processes) {
-          if (_currentWatchList.Contains(proc.ProcessName)) {
-            apps = apps.Concat(new [] { proc.ProcessName });
-          }
+          if (!_justNuisanceApps) {
+            if (_currentWatchList.Contains(proc.ProcessName)) {
+              apps = apps.Concat(new [] { proc.ProcessName });
+            }
+            Debug.WriteLine(proc);
 
-          if (IncludeBrowser) {
-            if (browsers.Contains(proc.ProcessName)) {
+            if (IncludeBrowser) {
+              if (browsers.Contains(proc.ProcessName)) {
+                apps = apps.Concat(new [] { proc.ProcessName });
+              }
+            }
+          } else {
+            if (nuisanceApps.Contains(proc.ProcessName)) {
               apps = apps.Concat(new [] { proc.ProcessName });
             }
           }
-
-          Debug.WriteLine(proc);
         }
       } catch (Exception e) {
         System.Windows.MessageBox.Show(e.Message);
