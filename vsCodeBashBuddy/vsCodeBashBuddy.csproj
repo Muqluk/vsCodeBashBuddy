@@ -76,7 +76,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BaseClasses\ViewModelLocator.cs" />
+    <Compile Include="Infrastructure\ViewModelLocator.cs" />
+    <Compile Include="Infrastructure\ViewModelRegistry.cs" />
     <Compile Include="Model\File.cs" />
     <Compile Include="Model\Folder.cs" />
     <Compile Include="Model\Repository.cs" />

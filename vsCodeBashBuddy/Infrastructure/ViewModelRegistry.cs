@@ -1,14 +1,17 @@
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-
-using GalaSoft.MvvmLight.Ioc;
-using CommonServiceLocator;
-using System;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace vsCodeBashBuddy.ViewModel {
   public class AppViewModelRegistry {
+
     private static AppViewModelRegistry _registry = null;
+
+
+    #region Properties
+
     public static AppViewModelRegistry getRegistry {
       get {
         if (_registry == null) {
@@ -18,11 +21,17 @@ namespace vsCodeBashBuddy.ViewModel {
       }
     }
 
+    public List<IViewModelBase> ViewModels { get; set; }
+
+    #endregion
+
+    #region CTOR
+
     private AppViewModelRegistry() {
       ViewModels = new List<IViewModelBase>();
     }
 
-    public List<IViewModelBase> ViewModels { get; set; }
+    #endregion
 
     public void DisposeAllThreads() {
       List<KeyValuePair<string, string>> threadsDisposeFails = new List<KeyValuePair<string, string>>();
@@ -50,32 +59,6 @@ namespace vsCodeBashBuddy.ViewModel {
         System.Windows.MessageBox.Show(message);
       }
     }
-  }
 
-  public class ViewModelLocator {
-    public List<IViewModelBase> ViewModels {
-      get {
-        AppViewModelRegistry registry = AppViewModelRegistry.getRegistry;
-        return registry.ViewModels;
-      }
-    }
-    public ViewModelLocator() {
-      AppViewModelRegistry registry = AppViewModelRegistry.getRegistry;
-      ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-
-      Assembly.GetExecutingAssembly().GetTypes()
-        .Where(t => t.GetInterfaces().Contains(typeof(IViewModelBase)) && !t.IsAbstract)
-        .ToList().ForEach(vm => {
-          var instance = Activator.CreateInstance(vm) as IViewModelBase;
-          SimpleIoc.Default.Register<IViewModelBase>(() => vm as IViewModelBase, vm.Name);
-          registry.ViewModels.Add(instance);
-        });
-    }
-
-    public static void Cleanup() {
-      AppViewModelRegistry registry = AppViewModelRegistry.getRegistry;
-      // call each module and dispose any currently running threads before exiting.
-      registry.DisposeAllThreads();
-    }
   }
 }
