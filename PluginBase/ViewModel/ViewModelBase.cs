@@ -10,7 +10,7 @@ namespace vsCodeBashBuddy.ViewModel {
     void DisposeThreads();
   }
 
-  public abstract class ViewModelBase : MvvmViewModelBase, IViewModelBase {
+  public abstract class ViewModelBase<IViewModelRegistry> : MvvmViewModelBase, IViewModelBase {
     public string Name {
       get {
         return this.GetType().Name.Replace("ViewModel", "");
@@ -18,5 +18,6 @@ namespace vsCodeBashBuddy.ViewModel {
     }
     public abstract void RegisterThreads();
     public abstract void DisposeThreads();
+    public ViewModelBase(IViewModelRegistry registry) { }
   }
 }

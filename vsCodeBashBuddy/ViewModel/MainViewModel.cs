@@ -10,7 +10,9 @@ using GalaSoft.MvvmLight.Command;
 
 
 namespace vsCodeBashBuddy.ViewModel {
-  public class MainViewModel : ViewModelBase {
+  public class MainViewModel : ViewModelBase<IViewModelRegistry> {
+
+    private IViewModelRegistry _registry;
 
     public ObservableCollection<UserControl> Controls { get; set; }
 
@@ -22,7 +24,8 @@ namespace vsCodeBashBuddy.ViewModel {
       get { return new RelayCommand(HandleCheckRegistration, () => true); }
     }
 
-    public MainViewModel() {
+    public MainViewModel(IViewModelRegistry registry) : base(registry) {
+      _registry = registry;
       //var viewModels = (App.Current.Resources["Locator"] as ViewModel.ViewModelLocator).ViewModels.FindAll(c => c.Name != "Main");
       //Controls = new ObservableCollection<UserControl>();
       //Assembly.GetExecutingAssembly()
@@ -49,10 +52,12 @@ namespace vsCodeBashBuddy.ViewModel {
     // perform all application thread clean up.
     private void HandleWindowClosing() {
       //int attempts = 0;
+      _registry.CloseRequest();
+
     }
 
     private void HandleCheckRegistration() {
-       
+
     }
 
     #endregion

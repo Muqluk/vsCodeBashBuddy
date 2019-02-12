@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace vsCodeBashBuddy.ViewModel {
-  public class AppViewModelRegistry {
+  public class AppViewModelRegistry : IViewModelRegistry {
 
     private static AppViewModelRegistry _registry = null;
 
@@ -60,5 +57,8 @@ namespace vsCodeBashBuddy.ViewModel {
       }
     }
 
+    public void CloseRequest() {
+      ViewModels.ForEach(vm => vm.DisposeThreads());
+    }
   }
 }

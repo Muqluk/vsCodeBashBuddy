@@ -9,7 +9,7 @@ using GalaSoft.MvvmLight;
 using vsCodeBashBuddy.Model;
 
 namespace vsCodeBashBuddy.ViewModel {
-  public class vsCodeSettingsViewModel : ViewModelBase {
+  public class vsCodeSettingsViewModel : ViewModelBase<IViewModelRegistry> {
     const string startupPath = @"C:\repo";
 
     private IFolder _currentRepository;
@@ -56,7 +56,7 @@ namespace vsCodeBashBuddy.ViewModel {
       }
     }
 
-    public vsCodeSettingsViewModel() {
+    public vsCodeSettingsViewModel(IViewModelRegistry registry) : base(registry) {
       RepositoriesRoot = new ObservableCollection<IFolder>();
       var dir = new DirectoryInfo(startupPath);
       foreach (var d in dir.GetDirectories()) {

@@ -10,7 +10,7 @@ using System.Windows;
 using GalaSoft.MvvmLight.Command;
 
 namespace vsCodeBashBuddy.ViewModel {
-  public class ProcessWatcherViewModel : ViewModelBase {
+  public class ProcessWatcherViewModel : ViewModelBase<IViewModelRegistry> {
     #region statics
     static string [] watchedApps = { "bash", "cmd", "conhost", "git - bash", "mintty", "mongod", "node" };
     static string [] browsers = { "iexplore", "chrome", "firefox" };
@@ -188,7 +188,7 @@ namespace vsCodeBashBuddy.ViewModel {
     #endregion
 
     #region Ctor
-    public ProcessWatcherViewModel() {
+    public ProcessWatcherViewModel(IViewModelRegistry registry) : base(registry) {
       ReloadWatchedApps();
     }
     #endregion

@@ -5,7 +5,7 @@ using System.Linq;
 using GalaSoft.MvvmLight.Command;
 
 namespace vsCodeBashBuddy.ViewModel {
-  public class ProcessMonitorViewModel : ViewModelBase {
+  public class ProcessMonitorViewModel : ViewModelBase<IViewModelRegistry> {
 
     enum SortByType {
       Asc = 0,
@@ -85,7 +85,7 @@ namespace vsCodeBashBuddy.ViewModel {
 
     #region Ctor
 
-    public ProcessMonitorViewModel() {
+    public ProcessMonitorViewModel(IViewModelRegistry registry) : base(registry) {
       this.getProcesses();
     }
 
