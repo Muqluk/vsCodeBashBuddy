@@ -5,7 +5,7 @@ using System.Linq;
 using GalaSoft.MvvmLight.Command;
 
 namespace vsCodeBashBuddy.ViewModel {
-  public class ProcessMonitorViewModel : ViewModelBase {
+  public class ProcessMonitorViewModel : GalaSoft.MvvmLight.ViewModelBase { // : ViewModelBase {
 
     enum SortByType {
       Asc = 0,
@@ -112,8 +112,8 @@ namespace vsCodeBashBuddy.ViewModel {
     #endregion
 
     #region base overrides
-    public override void RegisterThreads() { }
-    public override void DisposeThreads() { }
+    //public override void RegisterThreads() { }
+    //public override void DisposeThreads() { }
     #endregion
   }
 }

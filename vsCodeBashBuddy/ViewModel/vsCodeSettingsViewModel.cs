@@ -9,7 +9,7 @@ using GalaSoft.MvvmLight;
 using vsCodeBashBuddy.Model;
 
 namespace vsCodeBashBuddy.ViewModel {
-  public class vsCodeSettingsViewModel : ViewModelBase {
+  public class vsCodeSettingsViewModel : GalaSoft.MvvmLight.ViewModelBase { // : ViewModelBase {
     const string startupPath = @"C:\repo";
 
     private IFolder _currentRepository;
@@ -66,8 +66,8 @@ namespace vsCodeBashBuddy.ViewModel {
 
 
     #region base overrides
-    public override void RegisterThreads() { }
-    public override void DisposeThreads() { }
+    //public override void RegisterThreads() { }
+    //public override void DisposeThreads() { }
     #endregion
   }
 

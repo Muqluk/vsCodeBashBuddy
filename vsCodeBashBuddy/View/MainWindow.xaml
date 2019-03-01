@@ -23,7 +23,7 @@
       <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-    <StackPanel Grid.Row="0"
+    <!--<StackPanel Grid.Row="0"
                 Grid.ColumnSpan="2"
                 Orientation="Horizontal"
                 HorizontalAlignment="Stretch">
@@ -31,8 +31,8 @@
               Content="Check DisposeThreads Registration"
               Command="{Binding CheckDisposeThreadsRegistryCommand}"
               Height="25"></Button>
-    </StackPanel>
-    <Menu Grid.ColumnSpan="3"
+    </StackPanel>-->
+    <!--<Menu Grid.ColumnSpan="3"
           Grid.Row="1"
           Margin="0 0 0 5"
           HorizontalAlignment="Stretch"
@@ -53,18 +53,101 @@
                 Header="_About">
         <MenuItem Header="_Settings" />
       </MenuItem>
-    </Menu>
+    </Menu>-->
+    <!--
     <TabControl Grid.Row="2"
                 ItemsSource="{Binding Tabs}">
-      <TabItem Header="vsCode Settings">
+      -->
+    <!--<TabItem Header="vsCode Settings">
         <views:vsCodeSettings VerticalAlignment="Stretch" />
-      </TabItem>
+      </TabItem>-->
+    <!--
       <TabItem Header="Processes">
         <views:ProcessWatcher />
       </TabItem>
-      <TabItem Header="Process Monitor">
+      -->
+    <!--<TabItem Header="Process Monitor">
         <views:ProcessMonitor />
-      </TabItem>
-    </TabControl>
+      </TabItem>-->
+    <!--
+    </TabControl>-->
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="auto" />
+      </Grid.RowDefinitions>
+      <Button Grid.Row="0"
+              Command="{Binding ToggleErrorPanel}"
+              Content="Show Errors" />
+      <ListBox Visibility="{Binding DisplayingErrors, Converter={StaticResource BoolToVis}}"
+               Grid.Row="1"
+               Grid.RowSpan="3"
+               Background="White"
+               Height="auto"
+               MinHeight="238"
+               MinWidth="400"
+               Width="auto"
+               VerticalAlignment="Stretch"
+               HorizontalAlignment="Stretch"
+               ScrollViewer.CanContentScroll="true"
+               ItemsSource="{Binding Errors}" />
+      <ListBox Visibility="{Binding DisplayingErrors, Converter={StaticResource InverseVis}}"
+               Grid.Row="2"
+               Height="auto"
+               MinHeight="200"
+               MinWidth="400"
+               Width="auto"
+               VerticalAlignment="Stretch"
+               HorizontalAlignment="Stretch"
+               ScrollViewer.CanContentScroll="true"
+               ItemsSource="{Binding WatchedAppList}" />
+      <WrapPanel Visibility="{Binding DisplayingErrors, Converter={StaticResource InverseVis}}"
+                 Grid.Row="3"
+                 Margin="3 3 5 3">
+        <Button FontSize="20"
+                Grid.Row="1"
+                IsEnabled="{Binding ReloadAppsEnabled}"
+                Command="{Binding ReloadWatchedAppsCmd}"
+                Width="auto"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Reload" />
+        <WrapPanel>
+          <StackPanel>
+            <WrapPanel>
+              <CheckBox IsChecked="{Binding AutoRefreshApps}"
+                        VerticalAlignment="Center"
+                        Margin="5 0 0 0" />
+              <Label Margin="0 -5 0 -5">Auto Update</Label>
+            </WrapPanel>
+            <WrapPanel>
+              <CheckBox IsChecked="{Binding IncludeBrowser}"
+                        VerticalAlignment="Center"
+                        Margin="5 0 0 0" />
+              <Label Margin="0 -5 0 -5">Include Browser</Label>
+            </WrapPanel>
+          </StackPanel>
+          <StackPanel>
+            <WrapPanel>
+              <CheckBox IsChecked="{Binding JustNuisanceApps}"
+                        VerticalAlignment="Center"
+                        Margin="5 0 0 0" />
+              <Label Margin="0 -5 0 -5">Just Nuisance Apps</Label>
+            </WrapPanel>
+          </StackPanel>
+        </WrapPanel>
+      </WrapPanel>
+      <Button Visibility="{Binding DisplayingErrors, Converter={StaticResource InverseVis}}"
+              Grid.Row="3"
+              Margin="3"
+              FontSize="20"
+              IsEnabled="{Binding KillButtonEnabled}"
+              Command="{Binding KillSelectedAppsCmd}"
+              Width="auto"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Top">Kill All</Button>
+    </Grid>
   </Grid>
 </Window>
