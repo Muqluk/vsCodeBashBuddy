@@ -11,11 +11,21 @@ using GalaSoft.MvvmLight.Command;
 
 namespace vsCodeBashBuddy.ViewModel {
   public class ProcessWatcherViewModel : ViewModelBase {
-    #region statics
+    #region statics -- I should be loading these in from the app.config
     static string[] watchedApps = { "bash", "cmd", "conhost", "git - bash", "mintty", "mongod", "node" };
     static string[] browsers = { "iexplore", "chrome", "firefox" };
 
-    static string[] nuisanceApps = { "AppleMobileDeviceService", "GoogleCrashHandler", "GoogleCrashHandler64", "Microsoft.Photos", "OfficeClickToRun", "OfficeHubTaskHost", "SkypeApp", "SkypeBackgroundHost", "Teams" };
+    static string[] nuisanceApps = {
+      "AppleMobileDeviceService",
+      "GoogleCrashHandler",
+      "GoogleCrashHandler64",
+      "Microsoft.Photos",
+      "OfficeClickToRun",
+      "OfficeHubTaskHost",
+      "SkypeApp",
+      "SkypeBackgroundHost",
+      "Teams"
+    };
     #endregion
 
     #region members
@@ -27,7 +37,6 @@ namespace vsCodeBashBuddy.ViewModel {
     private bool _reloadAppsEnabled = true;
     private bool _killButtonEnabled = true;
     private bool _displayingErrors = false;
-    //private bool _includeNuisanceApps = false;
     private bool _watchNuisanceApps = false;
     private IEnumerable<string> _watchedAppList;
     private IEnumerable<string> _errorsList;
@@ -75,21 +84,24 @@ namespace vsCodeBashBuddy.ViewModel {
         return _includeBrowser;
       }
       set {
-        if (value != _includeBrowser) {
-          _includeBrowser = value;
-          _currentWatchList = watchedApps;
+        if (!WatchNuisanceApps) {
+          if (value != _includeBrowser) {
+            _includeBrowser = value;
+            _currentWatchList = watchedApps;
 
-          // my head hurts.  figger out how to merge 2 string arrays later - stupid thing to waste time on now.
-          if (value) {
-            var temp = _currentWatchList.ToList();
-            temp.AddRange(browsers.ToList());
-            _currentWatchList = temp.ToArray();
+            // my head hurts.  figger out how to merge 2 string arrays later - stupid thing to waste time on now.
+            if (value) {
+              var temp = _currentWatchList.ToList();
+              temp.AddRange(browsers.ToList());
+              _currentWatchList = temp.ToArray();
+            }
+
+            if (!AutoRefreshApps) {
+              ReloadWatchedApps();
+            }
+
+            RaisePropertyChanged("IncludeBrowser");
           }
-
-          if (!AutoRefreshApps)
-            ReloadWatchedApps();
-
-          RaisePropertyChanged("IncludeBrowser");
         }
       }
     }
@@ -132,8 +144,13 @@ namespace vsCodeBashBuddy.ViewModel {
       get { return _watchNuisanceApps; }
       set {
         if (value != _watchNuisanceApps) {
+          if (value == true) {
+            AutoRefreshApps = false;
+          }
           _watchNuisanceApps = value;
           RaisePropertyChanged("WatchNuisanceApps");
+          _currentWatchList = nuisanceApps;
+          ReloadWatchedApps();
         }
       }
     }
@@ -218,19 +235,11 @@ namespace vsCodeBashBuddy.ViewModel {
 
       try {
         foreach (var proc in processes) {
-          if (!_watchNuisanceApps) {
-            if (_currentWatchList.Contains(proc.ProcessName)) {
-              apps = apps.Concat(new[] { proc.ProcessName });
-            }
-            Debug.WriteLine(proc);
-
-            if (IncludeBrowser) {
-              if (browsers.Contains(proc.ProcessName)) {
-                apps = apps.Concat(new[] { proc.ProcessName });
-              }
-            }
-          } else {
-            if (nuisanceApps.Contains(proc.ProcessName)) {
+          if (_currentWatchList.Contains(proc.ProcessName)) {
+            apps = apps.Concat(new[] { proc.ProcessName });
+          }
+          if (IncludeBrowser) {
+            if (browsers.Contains(proc.ProcessName)) {
               apps = apps.Concat(new[] { proc.ProcessName });
             }
           }
@@ -242,55 +251,38 @@ namespace vsCodeBashBuddy.ViewModel {
       WatchedAppList = apps.Distinct().OrderBy(s => s, StringComparer.CurrentCultureIgnoreCase);
     }
 
-    private void KillSelectedApps() {
-      try {
-        var processes = Process.GetProcesses();
-        var apps = Enumerable.Empty<string>();
-
-        foreach (var proc in processes) {
-          if (_currentWatchList.Contains(proc.ProcessName)) {
-            try {
-              proc.Kill();
-            } catch (Exception ex) {
-              ErrorsList = ErrorsList.Concat<string>(new[] { ex.Message });
-            }
-          }
-        }
-
-        if (!AutoRefreshApps) {
-          ReloadWatchedApps();
-        }
-      } catch (Exception ex) {
-        System.Windows.MessageBox.Show(ex.Message);
-      }
-    }
-
     private void HandleToggleErrorPanelClick() {
       DisplayingErrors = !_displayingErrors;
     }
 
+    private void KillSelectedApps() {
+      KillProcesses(_currentWatchList);
+    }
+
     private void KillNuisancesHandler() {
+      KillProcesses(nuisanceApps);
+    }
+
+    private void KillProcesses(string[] walkingDead) {
       try {
         var processes = Process.GetProcesses();
         var apps = Enumerable.Empty<string>();
 
         foreach (var proc in processes) {
-          if (nuisanceApps.Contains(proc.ProcessName)) {
+          if (walkingDead.Contains(proc.ProcessName)) {
             try {
               proc.Kill();
             } catch (Exception ex) {
               ErrorsList = ErrorsList.Concat<string>(new[] { ex.Message });
             }
           }
-        }
-
-        if (!AutoRefreshApps) {
-          ReloadWatchedApps();
+          if (!AutoRefreshApps) {
+            ReloadWatchedApps();
+          }
         }
       } catch (Exception ex) {
-        System.Windows.MessageBox.Show(ex.Message);
+        MessageBox.Show(ex.Message);
       }
-
     }
 
     #endregion

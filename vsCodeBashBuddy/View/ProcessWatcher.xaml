@@ -8,12 +8,11 @@
   xmlns:c="clr-namespace:vsCodeBashBuddy.ValueConverters"
   xmlns:local="clr-namespace:vsCodeBashBuddy.View"
   mc:Ignorable="d">
-  <!--DataContext="{Binding Source={StaticResource Locator}, Path=ProcessWatcher}"-->
   <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="*"/>
-      <RowDefinition/>
-      <RowDefinition/>
+      <RowDefinition
+        Height="*" />
+      <RowDefinition />
     </Grid.RowDefinitions>
     <ListBox
       Visibility="{Binding DisplayingErrors, Converter={StaticResource InverseVis}}"
@@ -80,12 +79,13 @@
     <Button
       Visibility="{Binding DisplayingErrors, Converter={StaticResource InverseVis}}"
       Grid.Row="1"
-      Margin="3"
+      Margin="0 0 5 0"
       FontSize="20"
+      Padding="10 0 10 0"
       IsEnabled="{Binding KillButtonEnabled}"
       Command="{Binding KillSelectedAppsCmd}"
       Width="auto"
       HorizontalAlignment="Right"
-      VerticalAlignment="Top">Kill All</Button>
+      VerticalAlignment="Center">Kill</Button>
   </Grid>
 </UserControl>
