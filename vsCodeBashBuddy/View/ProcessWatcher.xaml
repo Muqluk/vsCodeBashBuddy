@@ -1,89 +1,91 @@
-﻿<UserControl x:Class="vsCodeBashBuddy.View.ProcessWatcher"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:c="clr-namespace:vsCodeBashBuddy.ValueConverters"
-             xmlns:local="clr-namespace:vsCodeBashBuddy.View"
-             mc:Ignorable="d">
+﻿<UserControl
+  x:Class="vsCodeBashBuddy.View.ProcessWatcher"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+  xmlns:c="clr-namespace:vsCodeBashBuddy.ValueConverters"
+  xmlns:local="clr-namespace:vsCodeBashBuddy.View"
+  mc:Ignorable="d">
   <!--DataContext="{Binding Source={StaticResource Locator}, Path=ProcessWatcher}"-->
   <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="auto" />
-      <RowDefinition Height="auto" />
-      <RowDefinition Height="*" />
-      <RowDefinition Height="auto" />
+      <RowDefinition Height="*"/>
+      <RowDefinition/>
+      <RowDefinition/>
     </Grid.RowDefinitions>
-    <Button Grid.Row="0"
-            Command="{Binding ToggleErrorPanel}"
-            Content="Show Errors" />
-    <ListBox Visibility="{Binding DisplayingErrors, Converter={StaticResource BoolToVis}}"
-             Grid.Row="1"
-             Grid.RowSpan="3"
-             Background="White"
-             Height="auto"
-             MinHeight="238"
-             MinWidth="400"
-             Width="auto"
-             VerticalAlignment="Stretch"
-             HorizontalAlignment="Stretch"
-             ScrollViewer.CanContentScroll="true"
-             ItemsSource="{Binding Errors}" />
-    <ListBox Visibility="{Binding DisplayingErrors, Converter={StaticResource InverseVis}}"
-             Grid.Row="2"
-             Height="auto"
-             MinHeight="200"
-             MinWidth="400"
-             Width="auto"
-             VerticalAlignment="Stretch"
-             HorizontalAlignment="Stretch"
-             ScrollViewer.CanContentScroll="true"
-             ItemsSource="{Binding WatchedAppList}" />
-    <WrapPanel Visibility="{Binding DisplayingErrors, Converter={StaticResource InverseVis}}"
-               Grid.Row="3"
-               Margin="3 3 5 3">
-      <Button FontSize="20"
-              Grid.Row="1"
-              IsEnabled="{Binding ReloadAppsEnabled}"
-              Command="{Binding ReloadWatchedAppsCmd}"
-              Width="auto"
-              HorizontalAlignment="Left"
-              VerticalAlignment="Top"
-              Content="Reload" />
+    <ListBox
+      Visibility="{Binding DisplayingErrors, Converter={StaticResource InverseVis}}"
+      Grid.Row="0"
+      Height="auto"
+      MinHeight="200"
+      MinWidth="400"
+      Width="auto"
+      VerticalAlignment="Stretch"
+      HorizontalAlignment="Stretch"
+      ScrollViewer.CanContentScroll="true"
+      ItemsSource="{Binding WatchedAppList}" />
+    <WrapPanel
+      Visibility="{Binding DisplayingErrors, Converter={StaticResource InverseVis}}"
+      Grid.Row="1"
+      Margin="3 3 5 3">
+      <Button
+        FontSize="20"
+        Grid.Row="1"
+        IsEnabled="{Binding ReloadAppsEnabled}"
+        Command="{Binding ReloadWatchedAppsCmd}"
+        Width="auto"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top"
+        Content="Reload" />
       <WrapPanel>
-        <StackPanel>
+        <StackPanel
+          IsEnabled="{Binding WatchNuisanceApps, Converter={StaticResource BoolInverter}}">
           <WrapPanel>
-            <CheckBox IsChecked="{Binding AutoRefreshApps}"
-                      VerticalAlignment="Center"
-                      Margin="5 0 0 0" />
-            <Label Margin="0 -5 0 -5">Auto Update</Label>
+            <CheckBox
+              IsChecked="{Binding AutoRefreshApps}"
+              VerticalAlignment="Center"
+              Margin="5 0 0 0" />
+            <Label
+              Margin="0 -5 0 -5">Auto Update</Label>
           </WrapPanel>
           <WrapPanel>
-            <CheckBox IsChecked="{Binding IncludeBrowser}"
-                      VerticalAlignment="Center"
-                      Margin="5 0 0 0" />
-            <Label Margin="0 -5 0 -5">Include Browser</Label>
+            <CheckBox
+              IsChecked="{Binding IncludeBrowser}"
+              VerticalAlignment="Center"
+              Margin="5 0 0 0" />
+            <Label
+              Margin="0 -5 0 -5">Include Browser</Label>
           </WrapPanel>
         </StackPanel>
         <StackPanel>
           <WrapPanel>
-            <CheckBox IsChecked="{Binding JustNuisanceApps}"
-                      VerticalAlignment="Center"
-                      Margin="5 0 0 0" />
-            <Label Margin="0 -5 0 -5">Just Nuisance Apps</Label>
+            <CheckBox
+              IsChecked="{Binding WatchNuisanceApps}"
+              VerticalAlignment="Center"
+              Margin="5 0 0 0" />
+            <Label
+              Margin="0 -5 0 -5">Watch Nuisance Apps</Label>
           </WrapPanel>
+          <Button
+            Content="Kill Nuisances"
+            VerticalAlignment="Center"
+            IsEnabled="{Binding WatchNuisanceApps}"
+            Command="{Binding KillNuisanceAppsCmd}"
+            Margin="5 0 0 0" />
         </StackPanel>
       </WrapPanel>
     </WrapPanel>
-    <Button Visibility="{Binding DisplayingErrors, Converter={StaticResource InverseVis}}"
-            Grid.Row="3"
-            Margin="3"
-            FontSize="20"
-            IsEnabled="{Binding KillButtonEnabled}"
-            Command="{Binding KillSelectedAppsCmd}"
-            Width="auto"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top">Kill All</Button>
+    <Button
+      Visibility="{Binding DisplayingErrors, Converter={StaticResource InverseVis}}"
+      Grid.Row="1"
+      Margin="3"
+      FontSize="20"
+      IsEnabled="{Binding KillButtonEnabled}"
+      Command="{Binding KillSelectedAppsCmd}"
+      Width="auto"
+      HorizontalAlignment="Right"
+      VerticalAlignment="Top">Kill All</Button>
   </Grid>
 </UserControl>
