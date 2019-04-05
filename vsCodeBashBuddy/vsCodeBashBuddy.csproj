@@ -76,8 +76,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Infrastructure\Messaging\AppCloseRequest.cs" />
     <Compile Include="Infrastructure\ViewModelLocator.cs" />
-    <Compile Include="Infrastructure\ViewModelMessenger.cs" />
     <Compile Include="Infrastructure\ViewModelRegistry.cs" />
     <Compile Include="Model\File.cs" />
     <Compile Include="Model\Folder.cs" />

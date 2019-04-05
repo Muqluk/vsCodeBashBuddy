@@ -6,8 +6,8 @@ using System.Threading;
 
 using System.Windows;
 
-//using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace vsCodeBashBuddy.ViewModel {
   public class ProcessWatcherViewModel : ViewModelBase {
@@ -62,9 +62,9 @@ namespace vsCodeBashBuddy.ViewModel {
         return _autoRefreshApps;
       }
       set {
-        if (value == true) {
-          MessageBox.Show("Not quite fully implemented dispose - so uncheck before exiting");
-        }
+        //if (value == true) {
+        //  MessageBox.Show("Not quite fully implemented dispose - so uncheck before exiting");
+        //}
         if (value != _autoRefreshApps) {
           _autoRefreshApps = value;
           if (_autoRefreshApps == true) {
@@ -146,11 +146,15 @@ namespace vsCodeBashBuddy.ViewModel {
         if (value != _watchNuisanceApps) {
           if (value == true) {
             AutoRefreshApps = false;
+            _currentWatchList = nuisanceApps;
+            AutoRefreshApps = true;
+          } else {
+            AutoRefreshApps = false;
+            _currentWatchList = watchedApps;
+            AutoRefreshApps = true;
           }
           _watchNuisanceApps = value;
           RaisePropertyChanged("WatchNuisanceApps");
-          _currentWatchList = nuisanceApps;
-          ReloadWatchedApps();
         }
       }
     }
@@ -200,9 +204,16 @@ namespace vsCodeBashBuddy.ViewModel {
     #endregion
 
     #region Ctor
+
     public ProcessWatcherViewModel() {
+      Messenger.Default.Register<Messaging.AppCloseRequest>(this,
+        (message) => {
+          AutoRefreshApps = !message.RequestClose;
+          this.RequestStopRefreshApps = message.RequestClose;
+        });
       ReloadWatchedApps();
     }
+
     #endregion
 
     #region Threading
@@ -214,7 +225,6 @@ namespace vsCodeBashBuddy.ViewModel {
     }
 
     private void AppWatcher() {
-
       ReloadAppsEnabled = false;
       while (_autoRefreshApps && _requestStopRefreshApps == false) {
         ReloadWatchedApps();
@@ -245,7 +255,7 @@ namespace vsCodeBashBuddy.ViewModel {
           }
         }
       } catch (Exception e) {
-        System.Windows.MessageBox.Show(e.Message);
+        MessageBox.Show(e.Message);
       }
 
       WatchedAppList = apps.Distinct().OrderBy(s => s, StringComparer.CurrentCultureIgnoreCase);
@@ -294,7 +304,6 @@ namespace vsCodeBashBuddy.ViewModel {
       while (_autoRefreshApps) {
         Thread.Sleep(50);
       }
-      MessageBox.Show("it should now be stopped");
     }
     #endregion
 

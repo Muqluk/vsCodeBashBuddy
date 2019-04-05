@@ -7,6 +7,7 @@ using System.Windows.Controls;
 
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 
 
 namespace vsCodeBashBuddy.ViewModel {
@@ -48,11 +49,12 @@ namespace vsCodeBashBuddy.ViewModel {
 
     // perform all application thread clean up.
     private void HandleWindowClosing() {
-      //int attempts = 0;
+      Messenger.Default.Send<Messaging.AppCloseRequest>(new Messaging.AppCloseRequest() { RequestClose = true });
+
     }
 
     private void HandleCheckRegistration() {
-       
+
     }
 
     #endregion
