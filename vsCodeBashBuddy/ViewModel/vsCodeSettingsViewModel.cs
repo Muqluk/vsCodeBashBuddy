@@ -12,10 +12,6 @@ using vsCodeBashBuddy.Model;
 
 namespace vsCodeBashBuddy.ViewModel {
   public class vsCodeSettingsViewModel : ViewModelBase {
-    #region base overrides
-    public override void RegisterThreads() { }
-    public override void DisposeThreads() { }
-    #endregion
 
     #region Private Members
 
@@ -24,82 +20,87 @@ namespace vsCodeBashBuddy.ViewModel {
 
     #endregion
 
-    #region Properties
+    #region properties
 
-    private IFileFolderItem _activeRepo = new FileFolderItem();
-    protected IFileFolderItem ActiveRepository {
+    private IFileFolderItem _currentRepository;
+    public IFileFolderItem CurrentRepository {
       get {
-        return _activeRepo;
+        return _currentRepository;
       }
       set {
-        if (value != _activeRepo) {
-          _activeRepo = value;
-          RepoItems = value.Descendents.ToList();
-          RaisePropertyChanged(nameof(ActiveRepository));
+        if (value != _currentRepository) {
+          _currentRepository = value;
+          ActiveRepository = new ObservableCollection<IFileFolderItem>();
+          foreach (var folder in _currentRepository.Descendents) {
+            ActiveRepository.Add(folder);
+          }
+          RaisePropertyChanged("CurrentRepository");
         }
       }
     }
 
-    private List<IFileFolderItem> _repoItems;
-    protected List<IFileFolderItem> RepoItems {
+    private ObservableCollection<IFileFolderItem> _repositoriesRoot;
+    public ObservableCollection<IFileFolderItem> RepositoriesRoot {
       get {
-        return _repoItems;
+        return _repositoriesRoot;
       }
       set {
-        if (value != _repoItems) {
-          _repoItems = value;
-          RaisePropertyChanged(nameof(RepoItems));
+        if (value != _repositoriesRoot) {
+          _repositoriesRoot = value;
+          RaisePropertyChanged("RepositoriesRoot");
+        }
+      }
+    }
+
+    private ObservableCollection<IFileFolderItem> _activeRepository;
+    public ObservableCollection<IFileFolderItem> ActiveRepository {
+      get {
+        return _activeRepository;
+      }
+      set {
+        if (value != _activeRepository) {
+          _activeRepository = value;
+          RaisePropertyChanged("ActiveRepository");
         }
       }
     }
 
     #endregion
-
-    #region CTOR
 
     public vsCodeSettingsViewModel() {
-      ActiveRepository = LoadDirectory(startupPath);
+      CurrentRepository = LoadDirectory(startupPath);
     }
 
-    #endregion
-
-    #region Private Methods
-
     private IFileFolderItem LoadDirectory(string fromPath) {
+      var dir = new DirectoryInfo(fromPath);
       IFileFolderItem ffItem = new FileFolderItem() {
-        Name = Path.GetDirectoryName(fromPath),
-        Path = fromPath,
+        Name = dir.Name,
+        Path = dir.FullName,
         isLoaded = true,
-        FileFolderType = FileFolderType.Root,
+        FileFolderType = FileFolderType.Directory,
         Descendents = new ObservableCollection<IFileFolderItem>(),
       };
 
-      foreach (var dir in Directory.GetDirectories(fromPath)) {
-        var item = new FileFolderItem() {
-          Name = Path.GetDirectoryName(dir),
-          Path = dir,
-          isLoaded = false,
-          FileFolderType = FileFolderType.Directory,
-          Descendents = new ObservableCollection<IFileFolderItem>(),
-        };
-        ffItem.Descendents.Add(item);
+      foreach (var di in dir.GetDirectories()) {
+        ffItem.Descendents.Add(LoadDirectory(di.FullName));
       }
-      foreach (var file in Directory.GetFiles(fromPath)) {
-        var fi = new FileInfo(file);
-        var item = new FileFolderItem() {
+      foreach (var fi in dir.GetFiles()) {
+        ffItem.Descendents.Add(new FileFolderItem() {
           Name = fi.Name,
           Path = fi.FullName,
           FileFolderType = FileFolderType.File,
           Size = fi.Length,
           Extension = fi.Extension,
-        };
-        ffItem.Descendents.Add(item);
+        });
       }
 
       return ffItem;
     }
 
-    #endregion
 
+    #region base overrides
+    public override void RegisterThreads() { }
+    public override void DisposeThreads() { }
+    #endregion
   }
 }
