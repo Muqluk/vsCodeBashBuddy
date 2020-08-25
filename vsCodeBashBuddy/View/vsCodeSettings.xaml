@@ -34,11 +34,10 @@
       Grid.Row="2"
       Grid.Column="0"
       ItemsSource="{Binding ActiveRepository}">
-      <TreeView.ItemTemplate>
+      <!--<TreeView.ItemTemplate>
         <HierarchicalDataTemplate 
           DataType="{x:Type model:Folder}"
           ItemsSource="{Binding Path=SubFolders}">
-          <!--<StackPanel>-->
           <WrapPanel>
             <CheckBox 
               IsChecked="{Binding Path=IsHidden}"
@@ -46,7 +45,7 @@
             <TextBlock Text="{Binding Path=Name}" />
           </WrapPanel>
         </HierarchicalDataTemplate>
-      </TreeView.ItemTemplate>
+      </TreeView.ItemTemplate>-->
     </TreeView>
     <GridSplitter Grid.Column="1"
                   Grid.Row="1"

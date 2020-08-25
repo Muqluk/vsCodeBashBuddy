@@ -4,6 +4,8 @@ using System.Linq;
 
 using GalaSoft.MvvmLight.Command;
 
+using vsCodeBashBuddy.Model;
+
 namespace vsCodeBashBuddy.ViewModel {
   public class ProcessMonitorViewModel : ViewModelBase {
 

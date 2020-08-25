@@ -78,9 +78,7 @@
     </ApplicationDefinition>
     <Compile Include="Infrastructure\ViewModelLocator.cs" />
     <Compile Include="Infrastructure\ViewModelRegistry.cs" />
-    <Compile Include="Model\File.cs" />
-    <Compile Include="Model\Folder.cs" />
-    <Compile Include="Model\Repository.cs" />
+    <Compile Include="Model\RunningProcesses.cs" />
     <Compile Include="ValueConverters\InverseVisibilityConverter.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ProcessMonitorViewModel.cs" />
