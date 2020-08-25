@@ -12,10 +12,29 @@ using GalaSoft.MvvmLight.Command;
 namespace vsCodeBashBuddy.ViewModel {
   public class ProcessWatcherViewModel : ViewModelBase {
     #region statics
-    static string [] watchedApps = { "bash", "cmd", "conhost", "git - bash", "mintty", "mongod", "node" };
-    static string [] browsers = { "iexplore", "chrome", "firefox" };
+    static string[] watchedApps = {
+      "bash",
+      "cmd",
+      "conhost",
+      "git - bash",
+      "mintty",
+      "mongod",
+      "node",
+      "chromedriver"
+    };
+    static string[] browsers = { "iexplore", "chrome", "firefox" };
 
-    static string [] nuisanceApps = { "AppleMobileDeviceService", "GoogleCrashHandler", "GoogleCrashHandler64", "Microsoft.Photos", "OfficeClickToRun", "OfficeHubTaskHost", "SkypeApp", "SkypeBackgroundHost", "Teams" };
+    static string[] nuisanceApps = {
+      "AppleMobileDeviceService",
+      "GoogleCrashHandler",
+      "GoogleCrashHandler64",
+      "Microsoft.Photos",
+      "OfficeClickToRun",
+      "OfficeHubTaskHost",
+      "SkypeApp",
+      "SkypeBackgroundHost",
+      "Teams"
+    };
     #endregion
 
     #region members
@@ -31,7 +50,7 @@ namespace vsCodeBashBuddy.ViewModel {
     private bool _justNuisanceApps = false;
     private IEnumerable<string> _watchedAppList;
     private IEnumerable<string> _errorsList;
-    private string [] _currentWatchList = watchedApps;
+    private string[] _currentWatchList = watchedApps;
 
     #endregion
 
@@ -86,7 +105,8 @@ namespace vsCodeBashBuddy.ViewModel {
             _currentWatchList = temp.ToArray();
           }
 
-          if (!AutoRefreshApps) ReloadWatchedApps();
+          if (!AutoRefreshApps)
+            ReloadWatchedApps();
 
           RaisePropertyChanged("IncludeBrowser");
         }
@@ -225,18 +245,18 @@ namespace vsCodeBashBuddy.ViewModel {
         foreach (var proc in processes) {
           if (!_justNuisanceApps) {
             if (_currentWatchList.Contains(proc.ProcessName)) {
-              apps = apps.Concat(new [] { proc.ProcessName });
+              apps = apps.Concat(new[] { proc.ProcessName });
             }
             Debug.WriteLine(proc);
 
             if (IncludeBrowser) {
               if (browsers.Contains(proc.ProcessName)) {
-                apps = apps.Concat(new [] { proc.ProcessName });
+                apps = apps.Concat(new[] { proc.ProcessName });
               }
             }
           } else {
             if (nuisanceApps.Contains(proc.ProcessName)) {
-              apps = apps.Concat(new [] { proc.ProcessName });
+              apps = apps.Concat(new[] { proc.ProcessName });
             }
           }
         }
@@ -257,7 +277,7 @@ namespace vsCodeBashBuddy.ViewModel {
             try {
               proc.Kill();
             } catch (Exception ex) {
-              ErrorsList = ErrorsList.Concat<string>(new [] { ex.Message });
+              ErrorsList = ErrorsList.Concat<string>(new[] { ex.Message });
             }
           }
         }

@@ -22,13 +22,13 @@ namespace vsCodeBashBuddy.Model {
       this.FullPath = dir.FullName;
       this.Files = new List<IFile>();
       this.SubFolders = new List<IFolder>();
-      foreach (var file in dir.GetFiles()) {
-        Files.Add(new File(file));
-      }
+      //foreach (var file in dir.GetFiles()) {
+      //  Files.Add(new File(file));
+      //}
 
-      foreach (var subdir in dir.GetDirectories()) {
-        this.SubFolders.Add(new Folder(subdir));
-      }
+      //foreach (var subdir in dir.GetDirectories()) {
+      //  this.SubFolders.Add(new Folder(subdir));
+      //}
     }
 
   }
