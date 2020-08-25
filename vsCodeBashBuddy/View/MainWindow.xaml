@@ -13,8 +13,7 @@
         Height="300">
   <i:Interaction.Triggers>
     <i:EventTrigger EventName="Closing">
-      <i:InvokeCommandAction Command="{Binding HandleWindowClosingCmd}"
-                             CommandParameter="{Binding}" />
+      <i:InvokeCommandAction Command="{Binding HandleWindowClosingCmd}" CommandParameter="{Binding}" />
     </i:EventTrigger>
   </i:Interaction.Triggers>
   <Grid Name="DisplayGrid">
@@ -23,14 +22,8 @@
       <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-    <StackPanel Grid.Row="0"
-                Grid.ColumnSpan="2"
-                Orientation="Horizontal"
-                HorizontalAlignment="Stretch">
-      <Button Width="150"
-              Content="Check DisposeThreads Registration"
-              Command="{Binding CheckDisposeThreadsRegistryCommand}"
-              Height="25"></Button>
+    <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Stretch">
+      <Button Width="150" Content="Check DisposeThreads Registration" Command="{Binding CheckDisposeThreadsRegistryCommand}" Height="25"/>
     </StackPanel>
     <Menu Grid.ColumnSpan="3"
           Grid.Row="1"
@@ -54,8 +47,7 @@
         <MenuItem Header="_Settings" />
       </MenuItem>
     </Menu>
-    <TabControl Grid.Row="2"
-                ItemsSource="{Binding Tabs}">
+    <TabControl Grid.Row="2" ItemsSource="{Binding Tabs}">
       <TabItem Header="vsCode Settings">
         <views:vsCodeSettings VerticalAlignment="Stretch" />
       </TabItem>
